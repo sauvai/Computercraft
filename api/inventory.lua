@@ -24,9 +24,22 @@ function EquipScanner()
 	return scanner.New(peripheral.wrap("left"))
 end
 
+function EquipPickaxe()
+	Equip(items.tools.pickaxe)
+end
+
 function Find(item)
 	for i = 1, 16 do
-		if turtle.getItemDetail(i) and item == turtle.getItemDetail(i).name then return i end
+		local itemInSlot = turtle.getItemDetail(i)
+		
+		if itemInSlot then
+			if itemInSlot.name == items.tools.plethoraModule then
+				itemInSlot.name = items.plethoraModules[itemInSlot.damage]
+			end
+			if item == itemInSlot.name then
+				return i
+			end
+		end
 	end
 	return nil
 end
