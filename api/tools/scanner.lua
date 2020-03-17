@@ -27,7 +27,6 @@ function New(peripheral)
 end
 
 function Scanner:GetBlock(x, y, z)
-    self:Scan()
     return self.scannedData[scannerWidth ^ 2 * (x + scannerRadius) + scannerWidth * (y + scannerRadius) + (z + scannerRadius) + 1]
 end
 
@@ -41,4 +40,9 @@ end
 
 function Scanner:GetOwnDirection()
     return self:GetBlock(0, 0, 0).state.facing
+end
+
+function Scanner:IsEmptyBlock(x, y, z)
+	local block = self:GetBlock(x, y, z)
+	return block == nil or block.name == "minecraft:air" or block.name == "minecraft:flowing_water" or block.name == "minecraft:flowing_lava"
 end
