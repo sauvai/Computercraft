@@ -6,9 +6,7 @@ function emptyButOne()
         turtle.select(i)
         local c = turtle.getItemCount()
 
-       if i > sapling and c - 1 > 0 then
-            turtle.dropDown(c - 1)
-        end
+        if i > sapling and c - 1 > 0 then turtle.dropDown(c - 1) end
     end
 end
 

@@ -1,0 +1,119 @@
+local coal = 1
+local sapling = coal + 2
+
+function emptyButOne()
+    for i = 1, 16 do
+        turtle.select(i)
+        local c = turtle.getItemCount()
+
+        if i > sapling and c - 1 > 0 then turtle.dropDown(c - 1) end
+    end
+end
+
+function refuel()
+    turtle.select(coal)
+    if turtle.getItemCount() > 1 then
+        turtle.refuel(turtle.getItemCount() - 1)
+    end
+end
+
+function selectFreeSlot()
+    for i = sapling + 1, 16 do
+        turtle.select(i)
+        if turtle.getItemCount() < 64 then break end
+    end
+end
+
+function plant()
+    for i = coal + 1, sapling do
+        turtle.select(i)
+        if turtle.getItemCount() > 1 then
+            if turtle.place() then break end
+        end
+    end
+end
+
+function cutTree()
+    local h = 0
+    forward()
+    while turtle.detectUp() do
+        if h > 0 then
+            for i = 1, 4 do
+                turtle.turnLeft()
+                local s, d = turtle.inspect()
+                if d.name == "minecraft:leaves" then turtle.dig() end
+            end
+        end
+        while not turtle.up() do turtle.digUp() end
+        h = h + 1
+    end
+    for i = 1, h do while not turtle.down() do turtle.digDown() end end
+    turtle.turnLeft()
+    turtle.turnLeft()
+    forward()
+    turtle.turnLeft()
+    turtle.turnLeft()
+    plant()
+end
+
+function checkSides()
+    for i = 1, 4 do
+        turtle.suck()
+        turtle.turnLeft()
+        local s, d = turtle.inspect()
+        if not s then
+            plant()
+        elseif d.name == "minecraft:log" or d.name == "minecraft:log2" then
+            cutTree()
+        end
+    end
+end
+
+function suckCoal()
+    turtle.select(coal)
+    turtle.suckUp()
+end
+
+function forward()
+    local s, d = turtle.inspect()
+    if d.name == nil or s == false or d.name == "minecraft:log" or d.name ==
+        "minecraft:leaves" then
+        while not turtle.forward() do turtle.dig() end
+        return true
+    end
+    return false
+end
+
+function turn()
+    local s, d = turtle.inspect()
+    turtle.turnRight()
+    if not (d.name == nil or s == false or d.name == "minecraft:leaves") then
+        turtle.turnLeft()
+        turtle.turnLeft()
+    end
+end
+
+local turnBlock = "minecraft:sand"
+local chest = "enderstorage:ender_storage"
+
+function main()
+    while true do
+        if turtle.getFuelLevel() < 500 then refuel() end
+        forward()
+        checkSides()
+        s, d = turtle.inspectDown()
+        if d.name == turnBlock then
+            turn()
+        elseif d.name == chest then
+            turtle.turnRight()
+            emptyButOne()
+            suckCoal()
+            shell.run("clear")
+        end
+    end
+end
+
+while turtle.down() do end
+while not turtle.forward() do turtle.turnLeft() end
+
+main()
