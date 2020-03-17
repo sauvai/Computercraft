@@ -16,15 +16,19 @@ end
 --Makes Scanner(...) act like Scanner.__init__ (Scanner, ...)
 setmetatable(Scanner, { __call = Scanner.__init__ })
 
+-- PRIVATE
+local function Scanner:Scan()
+    self.scannedData = self.peripheral.scan()
+end
+
+
+-- PUBLIC
 function New(peripheral)
     return Scanner(peripheral)
 end
 
-function Scanner:Scan()
-    self.scannedData = self.peripheral.scan()
-end
-
 function Scanner:GetBlock(x, y, z)
+    self:Scan()
     return self.scannedData[scannerWidth ^ 2 * (x + scannerRadius) + scannerWidth * (y + scannerRadius) + (z + scannerRadius) + 1]
 end
 
