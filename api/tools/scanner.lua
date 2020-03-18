@@ -26,11 +26,17 @@ function New(peripheral)
     return Scanner(peripheral)
 end
 
+function Scanner:IsBlockInRange(x, y, z)
+    return math.abs(x) <= scannerRadius and math.abs(y) <= scannerRadius and math.abs(z) <= scannerRadius
+end
+
 function Scanner:GetBlock(x, y, z)
+    if not self:IsBlockInRange(x, y, z) then return nil end
     return self.scannedData[scannerWidth ^ 2 * (x + scannerRadius) + scannerWidth * (y + scannerRadius) + (z + scannerRadius) + 1]
 end
 
 function Scanner:GetBlockMeta(x, y, z)
+    if not self:IsBlockInRange(x, y, z) then return nil end
     return self.peripheral.getBlockMeta(x, y, z)
 end
 
