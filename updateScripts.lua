@@ -7,11 +7,12 @@ Git:cloneTo("temp")
  
 local files = {
   "api",
-  "GPS.lua",
   "batteryFarm.lua",
+  "GPS.lua",
   "replaceBattery.lua",
   "treeFarm.lua",
-  "turtleQuarry.lua"
+  "turtleQuarry.lua",
+  "updateScripts.lua"
 }
  
 for i = 1, #files do
