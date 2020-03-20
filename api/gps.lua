@@ -203,7 +203,7 @@ function MoveTo(arrival)
 		position = Locate()
 		moveBeforeUpdatePath = moveBeforeUpdatePath - 1
 
-		while #map > 900000 do
+		while #map > 900000 do ---- TODO test if #map work (should not actually)
 			table.remove(map, 1)
 		end
 	end
