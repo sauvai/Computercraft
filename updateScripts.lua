@@ -7,16 +7,11 @@ Git:cloneTo("temp")
  
 local files = {
   "api",
-  "batteryFarm.lua",
-  "GPS.lua",
-  "replaceBattery.lua",
-  "treeFarm.lua",
-  "turtleQuarry.lua",
-  "updateScripts.lua"
+  "*.lua",
 }
  
-for i = 1, #files do
-  shell.run("rm", files[i])
+for _, file in pairs(files) do
+  shell.run("rm", file)
 end
  
 shell.run("mv temp/* .")
