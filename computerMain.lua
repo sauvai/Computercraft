@@ -1,15 +1,26 @@
 os.loadAPI("api/data/protocols.lua")
 os.loadAPI("api/data/labels.lua")
 os.loadAPI("api/multitasks.lua")
+os.loadAPI("api/googleMaps.lua")
 
 local serverId = nil
+local pingIntervalS = 5
 
--- EVENTS HANDLERS
+-------------- TASKS ---------------
 
 local function GetParkingPosition(answerProtocol)
 	-- TODO get parking position
 	local answerData = { position = vector.new(7, 7, 7) }
-	rednet.send(serverId, answerData, answerProtocol)s
+	rednet.send(serverId, answerData, answerProtocol)
+end
+
+----------- PING MANAGER -----------
+
+local function PingManager()
+	while true do
+		sleep(pingIntervalS)
+		rednet.send(serverId, { position = googleMaps.Locate() }, protocols.ping)
+	end
 end
 
 ---------- REDNET MANAGER ----------
@@ -47,6 +58,7 @@ local function Main()
 	rednet.send(serverId, { label = label }, protocols.computerRegister)
 
 	multitasks.CreateTask(RednetManager)
+	multitasks.CreateTask(PingManager)
 	multitasks.Run()
 end
 

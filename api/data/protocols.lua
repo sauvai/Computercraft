@@ -1,13 +1,12 @@
 -- Sent by turtle
 turtleRegister = "TurtleRegister"	-- { label }
 workFinished = "WorkFinished"
-pong = "Pong"
+ping = "Ping"	-- { position }
 
 -- Sent by computer
 computerRegister = "ComputerRegister"	-- { label }
 
 -- Sent by server
-ping = "Ping"
 free = "Free"	-- { chargerPosition }
 getParkingPosition = "GetParkingPosition"	-- { answerProtocol }
 

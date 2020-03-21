@@ -1,15 +1,24 @@
 os.loadAPI("api/data/protocols.lua")
-os.loadAPI("api/gps.lua")
+os.loadAPI("api/googleMaps.lua")
 os.loadAPI("api/multitasks.lua")
 
-local label = nil
 local serverId = nil
+local pingIntervalS = 5
 
--- EVENTS HANDLERS
+-------------- TASKS ---------------
 
 local function Free(id, data)
 	-- dump inventory
 	print(textutils.serialize(data.chargerPosition))
+end
+
+----------- PING MANAGER -----------
+
+local function PingManager()
+	while true do
+		sleep(pingIntervalS)
+		rednet.send(serverId, { position = googleMaps.Locate() }, protocols.ping)
+	end
 end
 
 ---------- REDNET MANAGER ----------
@@ -32,7 +41,7 @@ end
 ------------------------------------
 
 local function Main()
-	label = os.computerLabel()
+	local label = os.computerLabel()
 	if not label then
 		error("No label set")
 	end
@@ -46,6 +55,7 @@ local function Main()
 	print("Found server, registering...")
 	rednet.send(serverId, { label = label }, protocols.turtleRegister)
 
+	multitasks.CreateTask(PingManager)
 	multitasks.CreateTask(RednetManager)
 	multitasks.Run()
 end
