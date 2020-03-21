@@ -1,5 +1,5 @@
 os.loadAPI("api/tools/scanner.lua")
-os.loadAPI("api/data/items.lua")
+os.loadAPI("api/utils/items.lua")
 
 -- PRIVATE
 local function Equip(tool)

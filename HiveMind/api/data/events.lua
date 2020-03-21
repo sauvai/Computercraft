@@ -1,1 +1,0 @@
-computerRegistered = "ComputerRegistered"	--(id)

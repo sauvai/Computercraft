@@ -1,3 +1,5 @@
+os.loadAPI("api/utils/items.lua")
+
 local scannerRadius = 8
 local scannerWidth = scannerRadius * 2 + 1
 
@@ -50,5 +52,5 @@ end
 
 function Scanner:IsEmptyBlock(x, y, z)
 	local block = self:GetBlock(x, y, z)
-	return block == nil or block.name == "minecraft:air" or block.name == "minecraft:flowing_water" or block.name == "minecraft:flowing_lava"
+	return block == nil or block.name == items.minecraft.air or block.name == items.minecraft.water or block.name == items.minecraft.lava
 end
