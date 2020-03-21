@@ -20,7 +20,7 @@ local function Register()
 	end
 
 	print("Found server, registering...")
-	rednet.send(serverId, { label = label }, protocols.turtleRegister)
+	rednet.send(serverId, { label = os.computerLabel() }, protocols.turtleRegister)
 end
 
 ----------- PING MANAGER -----------

@@ -22,7 +22,7 @@ local function Register()
 	end
 
 	print("Found server, registering...")
-	rednet.send(serverId, { label = label }, protocols.computerRegister)
+	rednet.send(serverId, { label = os.computerLabel() }, protocols.computerRegister)
 end
 
 ----------- PING MANAGER -----------
