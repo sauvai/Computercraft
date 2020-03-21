@@ -12,6 +12,17 @@ local function Free(id, data)
 	print(textutils.serialize(data.chargerPosition))
 end
 
+local function Register()
+	serverId = nil
+	while not serverId do
+		serverId = rednet.lookup("Hive Mind", "server")
+		sleep(1)
+	end
+
+	print("Found server, registering...")
+	rednet.send(serverId, { label = label }, protocols.turtleRegister)
+end
+
 ----------- PING MANAGER -----------
 
 local function PingManager()
@@ -26,7 +37,8 @@ end
 local function HandleMessage(id, data, protocol)
 	if protocols.ShouldIgnore(protocol) then return end
 
-	if	protocol == protocols.free	then multitasks.CreateTask(Free, id, data)
+	if		protocol == protocols.free		then multitasks.CreateTask(Free, id, data)
+	elseif	protocol == protocols.register	then multitasks.CreateTask(Register)
 
 	else print("Unknown protocol: " .. protocol) end
 end
@@ -47,13 +59,8 @@ local function Main()
 	end
 
 	rednet.open("right")
-	while not serverId do
-		serverId = rednet.lookup("Hive Mind", "server")
-		sleep(1)
-	end
 
-	print("Found server, registering...")
-	rednet.send(serverId, { label = label }, protocols.turtleRegister)
+	Register()
 
 	multitasks.CreateTask(PingManager)
 	multitasks.CreateTask(RednetManager)

@@ -24,6 +24,16 @@ local turtles = {}
 local computers = {}
 local tasks = {}
 
+local function VectorToString(vector)
+	local positionString
+	if vector == nil then
+		positionString = "nil"
+	else
+		positionString = tostring(vector.x) .. ", " .. tostring(vector.y) .. ", " .. tostring(vector.z)
+	end
+	return positionString
+end
+
 local function GetById(id, list)
 	for i = 1, #list do
 		if list[i].id == id then return list[i] end
@@ -91,6 +101,10 @@ local function UpdateTasks()
 	end
 end
 
+local function AskToRegister(id)
+	rednet.send(id, nil, protocols.register)
+end
+
 local function RegisterTurtle(id, data)
 	if GetById(id, turtles) == nil then
 		table.insert(turtles, { id = id, label = data.label, hasPinged = true })
@@ -106,11 +120,9 @@ end
 local function RegisterComputer(id, data)
 	if GetById(id, computers) == nil then
 		table.insert(computers, { id = id, label = data.label, hasPinged = true })
+		os.queueEvent(events.computerRegistered, id)
+		print("Registered computer " .. data.label)
 	end
-
-	os.queueEvent(events.computerRegistered, id)
-
-	print("Registered computer " .. data.label)
 end
 
 local function RegisterPing(id, data)
@@ -119,7 +131,8 @@ local function RegisterPing(id, data)
 		entity = GetById(id, turtles)
 	end
 	if entity == nil then
-		print("Pinging entity is not registered, position: ", position)
+		AskToRegister(id)
+		print("Pinging entity is not registered, position:", VectorToString(data.position))
 		return
 	end
 
@@ -132,19 +145,14 @@ end
 local function PingManager()
 	while true do
 		sleep(10)
-		for _, computer in pairs(computers) do
+		for key, computer in pairs(computers) do
 			if computer.hasPinged ~= true then
-				local positionString
-				if computer.position == nil then
-					positionString = "nil"
-				else
-					positionString = tostring(computer.position.x) .. ", " .. tostring(computer.position.y) .. ", " .. tostring(computer.position.z)
-				end
-				print(computer.label, "have gone missing, last known position was", positionString)
+				print(computer.label, "have gone missing, last known position was", VectorToString(computer.position))
+				computers[key] = nil
 			end
 			computer.hasPinged = false
 		end
-		for _, turtle in pairs(turtles) do
+		for key, turtle in pairs(turtles) do
 			if turtle.hasPinged ~= true then
 				local positionString
 				if turtle.position == nil then
@@ -153,6 +161,7 @@ local function PingManager()
 					positionString = tostring(turtle.position.x) .. ", " .. tostring(turtle.position.y) .. ", " .. tostring(turtle.position.z)
 				end
 				print(turtle.label, "have gone missing, last known position was", positionString)
+				turtles[key] = nil
 			end
 			turtle.hasPinged = false
 		end

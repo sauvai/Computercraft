@@ -14,6 +14,17 @@ local function GetParkingPosition(answerProtocol)
 	rednet.send(serverId, answerData, answerProtocol)
 end
 
+local function Register()
+	serverId = nil
+	while not serverId do
+		serverId = rednet.lookup("Hive Mind", "server")
+		sleep(1)
+	end
+
+	print("Found server, registering...")
+	rednet.send(serverId, { label = label }, protocols.computerRegister)
+end
+
 ----------- PING MANAGER -----------
 
 local function PingManager()
@@ -28,7 +39,8 @@ end
 local function HandleMessage(id, data, protocol)
 	if protocols.ShouldIgnore(protocol) then return end
 
-	if	protocol == protocols.getParkingPosition then	multitasks.CreateTask(GetParkingPosition, data.answerProtocol)
+	if		protocol == protocols.getParkingPosition	then multitasks.CreateTask(GetParkingPosition, data.answerProtocol)
+	elseif	protocol == protocols.register				then multitasks.CreateTask(Register)
 
 	else print("Unknown protocol: " .. protocol) end
 end
@@ -49,13 +61,8 @@ local function Main()
 	end
 
 	rednet.open("top")
-	while not serverId do
-		serverId = rednet.lookup("Hive Mind", "server")
-		sleep(1)
-	end
 
-	print("Found server, registering...")
-	rednet.send(serverId, { label = label }, protocols.computerRegister)
+	Register()
 
 	multitasks.CreateTask(RednetManager)
 	multitasks.CreateTask(PingManager)

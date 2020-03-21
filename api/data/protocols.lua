@@ -7,6 +7,7 @@ ping = "Ping"	-- { position }
 computerRegister = "ComputerRegister"	-- { label }
 
 -- Sent by server
+register = "Register"
 free = "Free"	-- { chargerPosition }
 getParkingPosition = "GetParkingPosition"	-- { answerProtocol }
 
