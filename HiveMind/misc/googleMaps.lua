@@ -1,4 +1,5 @@
-os.loadAPI("api/inventory.lua")
+os.loadAPI("const/files.lua")
+os.loadAPI(files.inventory)
 
 local w1 = 1
 local w2 = 10

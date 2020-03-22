@@ -1,6 +1,7 @@
-os.loadAPI("api/utils/files.lua")
-os.loadAPI("api/utils/protocols.lua")
-os.loadAPI("core/multitasks.lua")
+os.loadAPI("const/files.lua")
+os.loadAPI(files.config)
+os.loadAPI(files.multitasks)
+os.loadAPI(files.protocols)
 
 ---------- REDNET MANAGER ----------
 

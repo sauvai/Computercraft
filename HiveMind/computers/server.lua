@@ -1,4 +1,4 @@
-os.loadAPI("api/utils/files.lua")
+os.loadAPI("const/files.lua")
 os.loadAPI(files.brain)
 os.loadAPI(files.checkMissingEntities)
 os.loadAPI(files.protocols)

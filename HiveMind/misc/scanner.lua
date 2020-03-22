@@ -1,4 +1,5 @@
-os.loadAPI("api/utils/items.lua")
+os.loadAPI("const/files.lua")
+os.loadAPI(files.items)
 
 local scannerRadius = 8
 local scannerWidth = scannerRadius * 2 + 1

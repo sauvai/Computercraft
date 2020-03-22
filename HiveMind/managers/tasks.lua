@@ -1,6 +1,7 @@
-os.loadAPI("api/utils/files.lua")
+os.loadAPI("const/files.lua")
 os.loadAPI(files.events)
 os.loadAPI(files.entities)
+os.loadAPI(files.labels)
 os.loadAPI(files.multitasks)
 
 --      Task structure
