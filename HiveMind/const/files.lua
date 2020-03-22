@@ -1,3 +1,9 @@
+config = 	"const/config.lua"
+events = 	"const/events.lua"
+items = 	"const/items.lua"
+labels = 	"const/labels.lua"
+protocols = "const/protocols.lua"
+
 brain =			"core/brain.lua"
 multitasks =	"core/multitasks.lua"
 
@@ -14,14 +20,9 @@ checkMissingEntities =	"managers/checkMissingEntities.lua"
 pingServer =			"managers/pingServer.lua"
 tasks =					"managers/tasks.lua"
 
+discord =		"misc/discord.lua"
 entities =		"misc/entities.lua"
 googleMaps =	"misc/googleMaps.lua"
 inventory = 	"misc/inventory.lua"
-scanner = 		"misc/scanner.lua"
+scanner =		"misc/scanner.lua"
 utils =			"misc/utils.lua"
-
-config = 	"const/config.lua"
-events = 	"const/events.lua"
-items = 	"const/items.lua"
-labels = 	"const/labels.lua"
-protocols = "const/protocols.lua"

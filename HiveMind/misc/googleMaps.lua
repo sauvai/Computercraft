@@ -185,7 +185,7 @@ function MoveTo(arrival)
 		end
 		
 		if directions == nil then
-			print("ERROR: no path found")
+			error("No path found", 1)
 			return
 		end
 		

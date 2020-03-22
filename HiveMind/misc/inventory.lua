@@ -10,7 +10,7 @@ local function Equip(tool)
 	if tool ~= currentTool then
 		local slot = Find(tool)
 		if slot == nil then
-			print("ERROR: Turtle don't have " .. tool)
+			error("Turtle don't have " .. tool, 2)
 			return nil
 		end
 		turtle.select(slot)
