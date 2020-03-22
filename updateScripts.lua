@@ -6,7 +6,7 @@ Git:setRepository("sauvai", "Computercraft", "master")
 Git:cloneTo("temp")
  
 local files = {
-  "api",
+  "HiveMind",
   "*.lua",
 }
  
