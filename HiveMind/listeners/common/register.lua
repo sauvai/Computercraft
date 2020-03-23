@@ -2,7 +2,7 @@ os.loadAPI("const/files.lua")
 os.loadAPI(files.config)
 os.loadAPI(files.protocols)
 
-function Listener()
+function Listener() -- TODO also send position of the computer, in case it crash on startup before any ping
 	while not config.serverId do
 		config.serverId = rednet.lookup("Hive Mind", "server")
 		sleep(1)

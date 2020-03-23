@@ -121,7 +121,7 @@ local function Tell(message, player)
 	chat.tell(player, message, -1, true, os.computerLabel())
 end
 
-local function FindChatBox(number)
+local function FindChatBox()
 	for _, side in pairs(peripheral.getNames()) do
 		if peripheral.getType(side) == "chatBox" then
 			return peripheral.wrap(side)

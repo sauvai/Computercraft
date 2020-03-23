@@ -40,7 +40,7 @@ local function GetParkingPosition() -- TODO get all parking manager to get the c
 	return data.position
 end
 
-local function FreeTurtle(id)
+local function FreeTurtle(id) -- TODO if no parking position found wait for a new parking Manager to connect
 	rednet.send(id, { chargerPosition = GetParkingPosition() }, protocols.free)
 	local turtle = entities.Get("turtle", id)
 	turtle.task = nil

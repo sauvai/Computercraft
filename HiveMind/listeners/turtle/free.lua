@@ -1,4 +1,7 @@
+os.loadAPI("const/files.lua")
+os.loadAPI(files.googleMaps)
+
 function Listener(id, data)
 	-- dump inventory
-	print(textutils.serialize(data.chargerPosition))
+	googleMaps.MoveTo(vector.new(data.chargerPosition.x, data.chargerPosition.y, data.chargerPosition.z))
 end

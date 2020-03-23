@@ -20,3 +20,11 @@ minecraft = {
 	water = "minecraft:flowing_water",
 	lava = "minecraft:flowing_lava",
 }
+
+peripheralsPlusOne = {
+	rfCharger = "peripheralsplusone:rf_charger"
+}
+
+computerCraft = {
+	computer = "computercraft:computer"
+}
