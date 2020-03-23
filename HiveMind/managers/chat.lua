@@ -98,7 +98,7 @@ local function SendUpdateMessage(entity, filesList)
 end
 
 local function Update()
-	-- DownloadRepository()
+	DownloadRepository()
 
 	for _, entity in pairs(entities.Get()) do
 		if entity.type == "turtle" then
@@ -121,7 +121,7 @@ local function Tell(message, player)
 	chat.tell(player, message, -1, true, os.computerLabel())
 end
 
-local function FindManipulator(number)
+local function FindChatBox(number)
 	for _, side in pairs(peripheral.getNames()) do
 		if peripheral.getType(side) == "chatBox" then
 			return peripheral.wrap(side)
@@ -137,7 +137,7 @@ end
 -------------- PUBLIC --------------
 
 function Manager()
-	chat = FindManipulator()
+	chat = FindChatBox()
 	
 	AddListener("update", Update)
 
