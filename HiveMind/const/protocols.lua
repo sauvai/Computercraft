@@ -8,6 +8,7 @@ ping = "Ping"	-- { position }
 register = "Register"	-- { label, type }
 
 -- Sent by server
-notRegistered = "NotRegistered"
 free = "Free"	-- { chargerPosition }
 getParkingPosition = "GetParkingPosition"	-- { answerProtocol }
+notRegistered = "NotRegistered"
+update = "Update"	-- { files = { file1 = content, file2 = content, ... } }
