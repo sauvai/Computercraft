@@ -61,12 +61,13 @@ local computersFiles = {
 		[files.googleMaps] = "",
 		[files.inventory] = "",
 		[files.scanner] = "",
+		[files.utils] = "",
 	}
 }
 
 local function DownloadRepository()
 	for _, file in ipairs(fs.list("/")) do
-		if file ~= "git" and not fs.isReadOnly(file) then
+		if file ~= "git" and file ~= "startup" and not fs.isReadOnly(file) then
 			fs.delete(file)
 		end
 	end
