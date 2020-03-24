@@ -28,3 +28,7 @@ peripheralsPlusOne = {
 computerCraft = {
 	computer = "computercraft:computer"
 }
+
+ae2 = {
+	interface = "appliedenergistics2:interface"
+}

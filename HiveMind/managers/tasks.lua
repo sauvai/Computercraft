@@ -37,11 +37,11 @@ local function GetParkingPosition() -- TODO get all parking manager to get the c
 	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getParkingPosition)
 	local _, data = rednet.receive(answerProtocol)
 
-	return data.position
+	return data
 end
 
 local function FreeTurtle(id) -- TODO if no parking position found wait for a new parking Manager to connect
-	rednet.send(id, { chargerPosition = GetParkingPosition() }, protocols.free)
+	rednet.send(id, GetParkingPosition(), protocols.free)
 	local turtle = entities.Get("turtle", id)
 	turtle.task = nil
 

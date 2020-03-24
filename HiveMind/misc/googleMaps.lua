@@ -29,7 +29,7 @@ local west = "west"
 local up = "up"
 local down = "down"
 
-local direction = { north, east, south, west }
+local directionWheel = { north, east, south, west }
 
 local function ManhattanDistance(v1, v2)
 	return math.abs(v1.x - v2.x) + math.abs(v1.y - v2.y) + math.abs(v1.z - v2.z)
@@ -222,6 +222,36 @@ function GetOwnDirection()
 	local scanner = inventory.EquipScanner()
 	scanner:Scan()
 	return scanner:GetOwnDirection()
+end
+
+-- Return the direction (north, east, west, etc...) corresponding to the side (right, left, back, etc ...)
+function SideToDirection(side)
+	local scanner = inventory.EquipScanner()
+	local ownDirection = GetOwnDirection()
+	if side == "front" or side == "up" or side == "down" then return ownDirection end
+
+	local wheelId
+	for i = 1, #directionWheel do
+		if ownDirection == directionWheel[i] then wheelId = i - 1 end
+	end
+
+	local wheelTurn
+	if side == "right" then wheelTurn = 1 end
+	if side == "left" then wheelTurn = -1 end
+	if side == "back" then wheelTurn = 2 end
+
+	return directionWheel[(wheelId - wheelTurn) % 4 + 1]
+end
+
+function VectorToDirection(vector)
+	if vector.x == 1 then return east end
+	if vector.x == -1 then return west end
+	if vector.y == 1 then return up end
+	if vector.y == -1 then return down end
+	if vector.z == 1 then return south end
+	if vector.z == -1 then return north end
+
+	error("Wrong vector format "..vector:tostring(), 2)
 end
 
 function Locate()

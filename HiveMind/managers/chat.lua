@@ -3,6 +3,7 @@ os.loadAPI(files.entities)
 os.loadAPI(files.labels)
 os.loadAPI(files.multitasks)
 os.loadAPI(files.protocols)
+os.loadAPI(files.utils)
 
 local chat
 local listeners = {}
@@ -30,8 +31,10 @@ local turtlesFiles = {
 	[files.pingServer] = "",
 	-- Misc
 	[files.googleMaps] = "",
+	[files.interface] = "",
 	[files.inventory] = "",
 	[files.scanner] = "",
+	[files.utils] = "",
 }
 
 local computersFiles = {
@@ -121,15 +124,6 @@ local function Tell(message, player)
 	chat.tell(player, message, -1, true, os.computerLabel())
 end
 
-local function FindChatBox()
-	for _, side in pairs(peripheral.getNames()) do
-		if peripheral.getType(side) == "chatBox" then
-			return peripheral.wrap(side)
-		end
-	end
-	error("ChatBox not found", 2)
-end
-
 local function AddListener(command, callback)
 	listeners[command] = callback
 end
@@ -137,7 +131,7 @@ end
 -------------- PUBLIC --------------
 
 function Manager()
-	chat = FindChatBox()
+	chat = utils.FindPeripheral("chatBox")
 	
 	AddListener("update", Update)
 

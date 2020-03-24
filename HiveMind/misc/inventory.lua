@@ -29,6 +29,16 @@ function EquipPickaxe()
 	Equip(items.tools.pickaxe)
 end
 
+function Unequip()
+	local slot = FindEmptySlot()
+	if not slot then
+		error("Unable to unequip, no free slot", 2)
+	end
+	turtle.select(slot)
+	turtle.equipLeft()
+	return slot
+end
+
 function Find(item)
 	for i = 1, 16 do
 		local itemInSlot = turtle.getItemDetail(i)
@@ -40,6 +50,17 @@ function Find(item)
 			if item == itemInSlot.name then
 				return i
 			end
+		end
+	end
+	return nil
+end
+
+function FindEmptySlot()
+	for i = 1, 16 do
+		local itemInSlot = turtle.getItemDetail(i)
+		
+		if not itemInSlot then
+			return i
 		end
 	end
 	return nil

@@ -16,3 +16,12 @@ function FindManipulator(module)
 	end
 	error("Manipulator with "..module.." not found", 2)
 end
+
+function FindPeripheral(peripheralName)
+	for _, side in pairs(peripheral.getNames()) do
+		if peripheral.getType(side) == peripheralName then
+			return peripheral.wrap(side), side
+		end
+	end
+	error(peripheralName.." not found", 2)
+end
