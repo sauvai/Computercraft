@@ -1,5 +1,6 @@
 turtle =					"computers/turtle.lua"
 parkingManager =			"computers/parkingManager.lua"
+batteryMonitor =			"computers/batteryMonitor.lua"
 
 config = 					"const/config.lua"
 events = 					"const/events.lua"

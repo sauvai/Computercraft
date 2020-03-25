@@ -10,15 +10,11 @@ local listeners = {}
 
 -------------- UPDATE --------------
 
-local turtlesFiles = {
-	-- Startup
-	["startup"] = "shell.run(\""..files.turtle.."\")",
-	-- Computers
-	[files.turtle] = "",
+local commonFiles = {
 	-- Const
 	[files.config] = "",
-	[files.files] = "",
 	[files.items] = "",
+	[files.files] = "",
 	[files.protocols] = "",
 	-- Core
 	[files.brain] = "",
@@ -26,15 +22,24 @@ local turtlesFiles = {
 	-- Listeners
 	[files.register] = "",
 	[files.update] = "",
-	[files.free] = "",
 	-- Managers
 	[files.pingServer] = "",
 	-- Misc
 	[files.googleMaps] = "",
-	[files.interface] = "",
 	[files.inventory] = "",
 	[files.scanner] = "",
 	[files.utils] = "",
+}
+
+local turtlesFiles = {
+	-- Startup
+	["startup"] = "shell.run(\""..files.turtle.."\")",
+	-- Computers
+	[files.turtle] = "",
+	-- Listeners
+	[files.free] = "",
+	-- Misc
+	[files.interface] = "",
 }
 
 local computersFiles = {
@@ -43,25 +48,14 @@ local computersFiles = {
 		["startup"] = "shell.run(\""..files.parkingManager.."\")",
 		-- Computers
 		[files.parkingManager] = "",
-		-- Const
-		[files.config] = "",
-		[files.items] = "",
-		[files.files] = "",
-		[files.protocols] = "",
-		-- Core
-		[files.brain] = "",
-		[files.multitasks] = "",
 		-- Listeners
-		[files.register] = "",
-		[files.update] = "",
 		[files.getParkingPosition] = "",
-		-- Managers
-		[files.pingServer] = "",
-		-- Misc
-		[files.googleMaps] = "",
-		[files.inventory] = "",
-		[files.scanner] = "",
-		[files.utils] = "",
+	},
+	[labels.batteryMonitor] = {
+		-- Startup
+		["startup"] = "shell.run(\""..files.batteryMonitor.."\")",
+		-- Computers
+		[files.batteryMonitor] = "",
 	}
 }
 
@@ -96,6 +90,12 @@ local function SendUpdateMessage(entity, filesList)
 			filesList[file] = h.readAll()
 			h.close()
 		end
+	end
+
+	for file, _ in pairs(commonFiles) do
+		local h = fs.open(file, "r")
+		filesList[file] = h.readAll()
+		h.close()
 	end
 
 	rednet.send(entity.id, { files = filesList }, protocols.update)
