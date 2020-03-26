@@ -13,8 +13,8 @@ function Listener(id, data)
 	side = googleMaps.SideToDirection(side)
 	local Interface = interface.New(p, side)
 	Interface:DumpInventory()
-	-- Get back scanner
-	Interface:GetItem({ name = "plethora:module", damage = 2 }, 1, true)
 	-- Go to charger
 	googleMaps.MoveTo(vector.new(data.chargerPosition.x, data.chargerPosition.y, data.chargerPosition.z))
+	-- Say to server that the task is done
+	rednet.send(config.serverId, nil, protocols.taskFinished)
 end

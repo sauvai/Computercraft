@@ -32,3 +32,7 @@ computerCraft = {
 ae2 = {
 	interface = "appliedenergistics2:interface"
 }
+
+thermalExpansion = {
+	energyCell = "thermalexpansion:cell"
+}

@@ -43,6 +43,8 @@ function Interface:DumpInventory()
 		self.peripheral.pullItems(self.side, i)
 	end
 	self.peripheral.pullItems(self.side, inventory.Unequip())
+	-- Get back scanner
+	self:GetItem({ name = "plethora:module", damage = 2 }, 1, true)
 end
 
 function Interface:GetItem(itemName, count, allowCraft) -- TODO separate in multiple simpler "do-task" function and move checks out of this class (so the turtle might change its behavior depending on the error)

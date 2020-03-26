@@ -1,3 +1,4 @@
 -- Computers labels
-parkingManager = "Parking Manager"
+batteryFarmer = "Battery Farmer"
 batteryMonitor = "Battery Monitor"
+parkingManager = "Parking Manager"

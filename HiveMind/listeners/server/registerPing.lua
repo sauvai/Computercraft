@@ -8,7 +8,7 @@ function Listener(id, data)
 	local entity = entities.Get(nil, id, nil)
 	if entity == nil then
 		rednet.send(id, nil, protocols.notRegistered)
-		print("Pinging entity is not registered, position:", utils.VectorToString(data.position))
+		-- print("Pinging entity is not registered, position:", utils.VectorToString(data.position))
 		return
 	end
 

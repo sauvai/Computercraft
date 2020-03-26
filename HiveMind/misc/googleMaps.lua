@@ -1,9 +1,11 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.inventory)
+os.loadAPI(files.utils)
 
 local w1 = 1
 local w2 = 10
 local pathUpdateFrequency = 8
+local mapPath = "data/map"
 
 -- Node struct
 local Node = {}
@@ -30,10 +32,6 @@ local up = "up"
 local down = "down"
 
 local directionWheel = { north, east, south, west }
-
-local function ManhattanDistance(v1, v2)
-	return math.abs(v1.x - v2.x) + math.abs(v1.y - v2.y) + math.abs(v1.z - v2.z)
-end
 
 local function GetMapKey(vector)
 	return vector.x .. "," .. vector.y .. "," .. vector.z
@@ -82,7 +80,7 @@ local function ShortestPath(goal, map)
 			end
 			
 			currentSuccessor.distance = currentNode.distance + 1
-			currentSuccessor.heuristic = ManhattanDistance(currentSuccessor.position, goal)
+			currentSuccessor.heuristic = utils.ManhattanDistance(currentSuccessor.position, goal)
 			currentSuccessor.cost = w1 * currentSuccessor.distance + w2 * currentSuccessor.heuristic
 			
 			local block = map[GetMapKey(currentSuccessor.position)]
@@ -142,7 +140,7 @@ end
 
 local function LoadMap()
 	local map = {}
-	local mapFS = fs.open("api/data/map", "r")
+	local mapFS = fs.open(mapPath, "r")
 
 	if mapFS then
 		local line = mapFS.readLine()
@@ -156,7 +154,7 @@ local function LoadMap()
 end
 
 local function SaveMap(map)
-	local mapFS = fs.open("api/data/map", "w")
+	local mapFS = fs.open(mapPath, "w")
 
 	for key,value in pairs(map) do
 		if value then
@@ -169,23 +167,33 @@ end
 
 -- PUBLIC
 function MoveTo(arrival)
-	local scanner = inventory.EquipScanner()
+	print("Moving to", arrival)
 	local position = Locate()
+	if position:tostring() == arrival:tostring() then return end
+	local scanner = inventory.EquipScanner()
 	local map = LoadMap()
 	local moveBeforeUpdatePath = 0
 	local directions
+	local goal = arrival
 
-	while position:tostring() ~= arrival:tostring() do
+	while position:tostring() ~= goal:tostring() do
 		scanner:Scan()
 		SaveScanToMap(map, scanner)
 		
+		if map[GetMapKey(arrival)] then
+			local emptySpaces = utils.FindEmptySpacesArround(arrival, scanner)
+			if #emptySpaces == 0 then error("Arrival is occupied and have no empty blocks arround", 2) end
+			goal = utils.FindClosest(position, table.unpack(emptySpaces))
+		else
+			goal = arrival
+		end
 		if moveBeforeUpdatePath == 0 or #directions == 0 then
-			directions = ShortestPath(arrival, map)
+			directions = ShortestPath(goal, map)
 			moveBeforeUpdatePath = pathUpdateFrequency
 		end
 		
 		if directions == nil then
-			error("No path found", 1)
+			error("No path found", 2)
 			return
 		end
 		
@@ -210,9 +218,14 @@ function MoveTo(arrival)
 	end
 	
 	SaveMap(map)
+
+	if position:tostring() ~= arrival:tostring() then
+		FaceDirection(VectorToDirection(arrival - position))
+	end
 end
 
 function FaceDirection(direction)
+	if direction == "up" or direction == "down" then return end
 	while direction ~= GetOwnDirection() do
 		turtle.turnRight()
 	end

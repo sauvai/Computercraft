@@ -1,8 +1,9 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.brain)
+os.loadAPI(files.monitorBattery)
+os.loadAPI(files.pingServer)
 os.loadAPI(files.protocols)
 os.loadAPI(files.register)
-os.loadAPI(files.pingServer)
 os.loadAPI(files.update)
 
 local function Main()
@@ -13,6 +14,7 @@ local function Main()
 	brain.AddListener(protocols.update, update.Listener)
 
 	brain.CreateManager(pingServer.Manager)
+	brain.CreateManager(monitorBattery.Manager)
 	brain.Start()
 end
 

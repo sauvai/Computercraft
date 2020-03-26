@@ -26,7 +26,7 @@ local function HandleMessage(id, data, protocolReceived)
 	end
 
 	if not found then
-		print("Unknown protocol", protocolReceived)
+		-- print("Unknown protocol", protocolReceived)
 	end
 end
 

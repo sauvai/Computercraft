@@ -55,3 +55,26 @@ function Scanner:IsEmptyBlock(x, y, z)
 	local block = self:GetBlock(x, y, z)
 	return block == nil or block.name == items.minecraft.air or block.name == items.minecraft.water or block.name == items.minecraft.lava
 end
+
+function Scanner:FindBlocks(...)
+	local blocks = {}
+	for _, block in pairs(arg) do
+		blocks[block] = {}
+	end
+
+	local minDistance = self:GetRadius() * -1
+	local maxDistance = self:GetRadius()
+	for x = minDistance, maxDistance do
+		for y = minDistance, maxDistance do
+			for z = minDistance, maxDistance do
+				for name, list in pairs(blocks) do
+					if self:GetBlock(x, y, z).name == name then
+						table.insert(list, vector.new(x, y, z))
+					end	
+				end
+			end
+		end
+	end
+
+	return blocks
+end

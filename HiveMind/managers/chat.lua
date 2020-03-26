@@ -38,6 +38,7 @@ local turtlesFiles = {
 	[files.turtle] = "",
 	-- Listeners
 	[files.free] = "",
+	[files.replaceBattery] = "",
 	-- Misc
 	[files.interface] = "",
 }
@@ -56,6 +57,18 @@ local computersFiles = {
 		["startup"] = "shell.run(\""..files.batteryMonitor.."\")",
 		-- Computers
 		[files.batteryMonitor] = "",
+		-- Managers
+		[files.monitorBattery] = "",
+	},
+	[labels.batteryFarmer] = {
+		-- Startup
+		["startup"] = "shell.run(\""..files.batteryFarmer.."\")",
+		-- Computers
+		[files.batteryFarmer] = "",
+		-- Listeners
+		[files.getBatteryPosition] = "",
+		-- Managers
+		[files.monitorBattery] = "",
 	}
 }
 
