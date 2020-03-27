@@ -23,7 +23,11 @@ function Listener(id, data)
 		end
 	end
 	-- Go to battery to position
-	googleMaps.MoveTo(data.position - vector.new(0, 1, 0))
+	local arrival = data.position - vector.new(0, 1, 0)
+	while googleMaps.Locate():tostring() ~= arrival:tostring() do
+		googleMaps.MoveTo(arrival)
+		sleep(5)
+	end
 	-- Place new battery
 	turtle.select(inventory.Find(items.thermalExpansion.energyCell))
 	turtle.placeUp()
