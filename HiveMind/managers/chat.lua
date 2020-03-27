@@ -1,5 +1,6 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.entities)
+os.loadAPI(files.filesNeeded)
 os.loadAPI(files.labels)
 os.loadAPI(files.multitasks)
 os.loadAPI(files.protocols)
@@ -9,70 +10,6 @@ local chat
 local listeners = {}
 
 -------------- UPDATE --------------
-
-local commonFiles = {
-	-- Const
-	[files.config] = "",
-	[files.items] = "",
-	[files.files] = "",
-	[files.protocols] = "",
-	-- Core
-	[files.brain] = "",
-	[files.multitasks] = "",
-	-- Listeners
-	[files.register] = "",
-	[files.update] = "",
-	-- Managers
-	[files.pingServer] = "",
-	-- Misc
-	[files.googleMaps] = "",
-	[files.inventory] = "",
-	[files.scanner] = "",
-	[files.utils] = "",
-}
-
-local turtlesFiles = {
-	-- Startup
-	["startup"] = "shell.run(\""..files.turtle.."\")",
-	-- Computers
-	[files.turtle] = "",
-	-- Listeners
-	[files.free] = "",
-	[files.chargeBattery] = "",
-	[files.replaceBattery] = "",
-	-- Misc
-	[files.interface] = "",
-}
-
-local computersFiles = {
-	[labels.parkingManager] = {
-		-- Startup
-		["startup"] = "shell.run(\""..files.parkingManager.."\")",
-		-- Computers
-		[files.parkingManager] = "",
-		-- Listeners
-		[files.getParkingPosition] = "",
-	},
-	[labels.batteryMonitor] = {
-		-- Startup
-		["startup"] = "shell.run(\""..files.batteryMonitor.."\")",
-		-- Computers
-		[files.batteryMonitor] = "",
-		-- Managers
-		[files.monitorBattery] = "",
-	},
-	[labels.batteryFarmer] = {
-		-- Startup
-		["startup"] = "shell.run(\""..files.batteryFarmer.."\")",
-		-- Computers
-		[files.batteryFarmer] = "",
-		-- Listeners
-		[files.getBatteryPosition] = "",
-		-- Managers
-		[files.checkBatteryChargingSpaces] = "",
-		[files.monitorBattery] = "",
-	}
-}
 
 local function DownloadRepository()
 	for _, file in ipairs(fs.list("/")) do
@@ -94,7 +31,7 @@ local function DownloadRepository()
 	fs.delete("temp")
 end
 
-local function SendUpdateMessage(entity, filesList)
+function SendUpdateMessage(entity, filesList)
 	if filesList == nil then
 		error("Empty file list given for " ..entity.label .. " (id #" .. entity.id .. ")", 2)
 	end
@@ -107,8 +44,9 @@ local function SendUpdateMessage(entity, filesList)
 		end
 	end
 
-	for file, _ in pairs(commonFiles) do
+	for file, _ in pairs(filesNeeded.commonFiles) do
 		local h = fs.open(file, "r")
+		if h == nil then error("Can't open file "..file) end
 		filesList[file] = h.readAll()
 		h.close()
 	end
@@ -121,9 +59,9 @@ local function Update()
 
 	for _, entity in pairs(entities.Get()) do
 		if entity.type == "turtle" then
-			SendUpdateMessage(entity, turtlesFiles)
+			SendUpdateMessage(entity, filesNeeded.turtlesFiles)
 		else
-			SendUpdateMessage(entity, computersFiles[entity.label])
+			SendUpdateMessage(entity, filesNeeded.computersFiles[entity.label])
 		end
 	end
 

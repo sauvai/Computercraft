@@ -7,6 +7,7 @@ emptyBatteryDetected = "Empty Battery Detected"
 batteryChargingSpaceDetected = "Battery Charging Space Detected"
 
 -- Sent by both
+init = "Init"	-- { label, type }
 register = "Register"	-- { label, type }
 
 -- Sent by server
