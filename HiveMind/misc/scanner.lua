@@ -1,5 +1,6 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.items)
+os.loadAPI(files.utils)
 
 local scannerRadius = 8
 local scannerWidth = scannerRadius * 2 + 1
@@ -29,18 +30,21 @@ function New(peripheral)
 	return Scanner(peripheral)
 end
 
-function Scanner:IsBlockInRange(x, y, z)
-	return math.abs(x) <= scannerRadius and math.abs(y) <= scannerRadius and math.abs(z) <= scannerRadius
+function Scanner:IsBlockInRange(...)
+	local v = utils.VariadicToVector(arg)
+	return math.abs(v.x) <= scannerRadius and math.abs(v.y) <= scannerRadius and math.abs(v.z) <= scannerRadius
 end
 
-function Scanner:GetBlock(x, y, z)
-	if not self:IsBlockInRange(x, y, z) then return nil end
-	return self.scannedData[scannerWidth ^ 2 * (x + scannerRadius) + scannerWidth * (y + scannerRadius) + (z + scannerRadius) + 1]
+function Scanner:GetBlock(...)
+	local v = utils.VariadicToVector(arg)
+	if not self:IsBlockInRange(v) then return nil end
+	return self.scannedData[scannerWidth ^ 2 * (v.x + scannerRadius) + scannerWidth * (v.y + scannerRadius) + (v.z + scannerRadius) + 1]
 end
 
-function Scanner:GetBlockMeta(x, y, z)
-	if not self:IsBlockInRange(x, y, z) then return nil end
-	return self.peripheral.getBlockMeta(x, y, z)
+function Scanner:GetBlockMeta(...)
+	local v = utils.VariadicToVector(arg)
+	if not self:IsBlockInRange(v) then return nil end
+	return self.peripheral.getBlockMeta(v.x, v.y, v.z)
 end
 
 function Scanner:GetRadius()
@@ -51,8 +55,9 @@ function Scanner:GetOwnDirection()
 	return self:GetBlock(0, 0, 0).state.facing
 end
 
-function Scanner:IsEmptyBlock(x, y, z)
-	local block = self:GetBlock(x, y, z)
+function Scanner:IsEmptyBlock(...)
+	local v = utils.VariadicToVector(arg)
+	local block = self:GetBlock(v)
 	return block == nil or block.name == items.minecraft.air or block.name == items.minecraft.water or block.name == items.minecraft.lava
 end
 

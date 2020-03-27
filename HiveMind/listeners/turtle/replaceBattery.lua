@@ -6,7 +6,7 @@ os.loadAPI(files.utils)
 
 function Listener(id, data)
 	-- Go to interface
-	googleMaps.MoveTo(vector.new(data.interface.position.x, data.interface.position.y, data.interface.position.z))
+	googleMaps.MoveTo(data.interface.position)
 	googleMaps.FaceDirection(data.interface.facing)
 	-- Get items needed
 	local p, side = utils.FindPeripheral(items.ae2.interface)
@@ -22,7 +22,7 @@ function Listener(id, data)
 		end
 	end
 	-- Go to battery to pickup
-	googleMaps.MoveTo(vector.new(data.batteryToPickup.x, data.batteryToPickup.y, data.batteryToPickup.z))
+	googleMaps.MoveTo(data.batteryToPickup)
 	-- Pickup battery
 	inventory.EquipPickaxe()
 	local newBatterySlot = inventory.FindEmptySlot()
@@ -32,7 +32,7 @@ function Listener(id, data)
 	elseif direction == "down" then turtle.digDown()
 	else turtle.dig() end
 	-- Go to battery to replaces
-	googleMaps.MoveTo(vector.new(data.batteryToReplace.x, data.batteryToReplace.y, data.batteryToReplace.z))
+	googleMaps.MoveTo(data.batteryToReplace)
 	-- Pickup battery
 	inventory.EquipPickaxe()
 	direction = googleMaps.VectorToDirection(data.batteryToReplace - googleMaps.Locate())

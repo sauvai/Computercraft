@@ -13,7 +13,7 @@ function Listener(id, data)
 	local batteries = blocks[items.thermalExpansion.energyCell]
 	local computerPosition
 	for _, computer in pairs(blocks[items.computerCraft.computer]) do
-		if Scanner:GetBlockMeta(computer.x, computer.y, computer.z).computer.id == os.computerID() then
+		if Scanner:GetBlockMeta(computer).computer.id == os.computerID() then
 			computerPosition = computer
 		end
 	end
@@ -21,7 +21,7 @@ function Listener(id, data)
 	local maxRF = 0
 	local maxFilledBattery = batteries[1]
 	for _, battery in pairs(batteries) do
-		local rfData = Scanner:GetBlockMeta(battery.x, battery.y, battery.z).rf
+		local rfData = Scanner:GetBlockMeta(battery).rf
 		if rfData.stored > maxRF then
 			maxRF = rfData.stored
 			maxFilledBattery = battery

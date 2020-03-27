@@ -13,14 +13,14 @@ local function FindBatteryChargingSpacesAvailable()
 	local fluxDucts = blocks[items.thermalDynamics.fluxDuct]
 	local computerPosition
 	for _, computer in pairs(blocks[items.computerCraft.computer]) do
-		if Scanner:GetBlockMeta(computer.x, computer.y, computer.z).computer.id == os.computerID() then
+		if Scanner:GetBlockMeta(computer).computer.id == os.computerID() then
 			computerPosition = computer
 		end
 	end
 
 	local batteriesToPlace = {}
 	for _, fluxDuct in pairs(fluxDucts) do
-		if Scanner:IsEmptyBlock(fluxDuct.x, fluxDuct.y - 1, fluxDuct.z) then
+		if Scanner:IsEmptyBlock(fluxDuct - vector.new(0, 1, 0)) then
 			table.insert(batteriesToPlace, googleMaps.Locate() + fluxDuct - vector.new(0, 1, 0) - computerPosition)
 		end
 	end

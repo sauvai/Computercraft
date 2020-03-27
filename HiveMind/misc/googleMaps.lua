@@ -166,7 +166,8 @@ local function SaveMap(map)
 end
 
 -- PUBLIC
-function MoveTo(arrival)
+function MoveTo(...)
+	local arrival = utils.VariadicToVector(arg)
 	print("Moving to", arrival)
 	local position = Locate()
 	if position:tostring() == arrival:tostring() then return end
@@ -256,15 +257,17 @@ function SideToDirection(side)
 	return directionWheel[(wheelId - wheelTurn) % 4 + 1]
 end
 
-function VectorToDirection(vector)
-	if vector.x == 1 then return east end
-	if vector.x == -1 then return west end
-	if vector.y == 1 then return up end
-	if vector.y == -1 then return down end
-	if vector.z == 1 then return south end
-	if vector.z == -1 then return north end
+function VectorToDirection(...)
+	local v = utils.VariadicToVector(arg)
 
-	error("Wrong vector format "..vector:tostring(), 2)
+	if v.x == 1 then return east end
+	if v.x == -1 then return west end
+	if v.y == 1 then return up end
+	if v.y == -1 then return down end
+	if v.z == 1 then return south end
+	if v.z == -1 then return north end
+
+	error("Wrong vector format "..v:tostring(), 2)
 end
 
 function Locate()

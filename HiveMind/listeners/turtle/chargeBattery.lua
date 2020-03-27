@@ -7,7 +7,7 @@ os.loadAPI(files.utils)
 
 function Listener(id, data)
 	-- Go to interface
-	googleMaps.MoveTo(vector.new(data.interface.position.x, data.interface.position.y, data.interface.position.z))
+	googleMaps.MoveTo(data.interface.position)
 	googleMaps.FaceDirection(data.interface.facing)
 	-- Get items needed
 	local p, side = utils.FindPeripheral(items.ae2.interface)
@@ -23,7 +23,7 @@ function Listener(id, data)
 		end
 	end
 	-- Go to battery to position
-	googleMaps.MoveTo(vector.new(data.position.x, data.position.y - 1, data.position.z))
+	googleMaps.MoveTo(data.position - vector.new(0, 1, 0))
 	-- Place new battery
 	turtle.select(inventory.Find(items.thermalExpansion.energyCell))
 	turtle.placeUp()

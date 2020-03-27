@@ -14,7 +14,7 @@ function Listener(id, data)
 	local interface = blocks[items.ae2.interface][1]
 	local computerPosition
 	for _, computer in pairs(blocks[items.computerCraft.computer]) do
-		if Scanner:GetBlockMeta(computer.x, computer.y, computer.z).computer.id == os.computerID() then
+		if Scanner:GetBlockMeta(computer).computer.id == os.computerID() then
 			computerPosition = computer
 		end
 	end
