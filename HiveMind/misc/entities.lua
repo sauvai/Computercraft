@@ -15,6 +15,8 @@ function Add(type, id, label)
 end
 
 function Remove(entityToBeRemoved)
+	if entityToBeRemoved == nil then return end
+
 	for key, entity in pairs(entities) do
 		if entity == entityToBeRemoved then
 			entities[key] = nil
