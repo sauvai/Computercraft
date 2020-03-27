@@ -1,5 +1,6 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.brain)
+os.loadAPI(files.checkBatteryChargingSpaces)
 os.loadAPI(files.getBatteryPosition)
 os.loadAPI(files.monitorBattery)
 os.loadAPI(files.pingServer)
@@ -16,6 +17,7 @@ local function Main()
 
 	brain.AddListener(protocols.getBatteryPosition, getBatteryPosition.Listener)
 
+	brain.CreateManager(checkBatteryChargingSpaces.Manager)
 	brain.CreateManager(pingServer.Manager)
 	brain.Start()
 end

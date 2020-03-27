@@ -38,6 +38,7 @@ local turtlesFiles = {
 	[files.turtle] = "",
 	-- Listeners
 	[files.free] = "",
+	[files.chargeBattery] = "",
 	[files.replaceBattery] = "",
 	-- Misc
 	[files.interface] = "",
@@ -68,6 +69,7 @@ local computersFiles = {
 		-- Listeners
 		[files.getBatteryPosition] = "",
 		-- Managers
+		[files.checkBatteryChargingSpaces] = "",
 		[files.monitorBattery] = "",
 	}
 }

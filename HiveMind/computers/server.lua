@@ -1,4 +1,5 @@
 os.loadAPI("const/files.lua")
+os.loadAPI(files.batteryChargingSpaceDetected)
 os.loadAPI(files.brain)
 os.loadAPI(files.chat)
 os.loadAPI(files.checkMissingEntities)
@@ -21,6 +22,7 @@ local function Main()
 	brain.AddListener(protocols.ping, registerPing.Listener)
 	brain.AddListener(protocols.taskFinished, taskFinished.Listener)
 	brain.AddListener(protocols.emptyBatteryDetected, emptyBatteryDetected.Listener)
+	brain.AddListener(protocols.batteryChargingSpaceDetected, batteryChargingSpaceDetected.Listener)
 
 	brain.CreateManager(checkMissingEntities.Manager)
 	brain.CreateManager(tasks.Manager)

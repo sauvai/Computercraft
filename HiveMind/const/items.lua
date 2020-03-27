@@ -1,3 +1,4 @@
+---------- SPECIALS ----------
 tools = {
 	plethoraModule = "plethora:module",
 	scanner = "plethora:scanner",
@@ -15,22 +16,27 @@ plethoraModules = {
 	"plethora:chat_creative",
 }
 
-minecraft = {
-	air = "minecraft:air",
-	water = "minecraft:flowing_water",
-	lava = "minecraft:flowing_lava",
-}
-
-peripheralsPlusOne = {
-	rfCharger = "peripheralsplusone:rf_charger"
+---------- SORTED BY MODS ----------
+ae2 = {
+	interface = "appliedenergistics2:interface"
 }
 
 computerCraft = {
 	computer = "computercraft:computer"
-}
+}	
 
-ae2 = {
-	interface = "appliedenergistics2:interface"
+minecraft = {
+	air = "minecraft:air",
+	lava = "minecraft:flowing_lava",
+	water = "minecraft:flowing_water",
+}	
+
+peripheralsPlusOne = {
+	rfCharger = "peripheralsplusone:rf_charger"
+}	
+
+thermalDynamics = {
+	fluxDuct = "thermaldynamics:duct_0"
 }
 
 thermalExpansion = {

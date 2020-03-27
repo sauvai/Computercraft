@@ -66,10 +66,13 @@ local function AssignTask(turtle)
 		turtle.task.data.batteryToPickup = GetChargedBatteryPosition()
 		turtle.task.data.interface = GetParkingPosition().interface
 	end
-	
+
+	if turtle.task.protocol == protocols.chargeBattery then
+		turtle.task.data.interface = GetParkingPosition().interface
+	end
+
 	rednet.send(turtle.id, turtle.task.data, turtle.task.protocol)
 	print("Assigned task " .. turtle.task.protocol .. " to turtle " .. turtle.label)
-	print(textutils.serialize(turtle.task.data))
 end
 
 local function UpdateTasks()
@@ -122,6 +125,17 @@ function Manager()
 				batteryToReplace = param1
 			}
 			table.insert(tasks, { protocol = protocols.replaceBattery, id = utils.VectorToString(param1), data = data })
+			UpdateTasks()
+		end
+
+		if event == events.batteryChargingSpaceDetected and not IsDuplicate(protocols.batteryChargingSpaceDetected, utils.VectorToString(param1)) then
+			local data = {
+				itemsNeeded = {
+					{ count = 1, item = items.thermalExpansion.energyCell, allowCraft = true }
+				},
+				position = param1
+			}
+			table.insert(tasks, { protocol = protocols.chargeBattery, id = utils.VectorToString(param1), data = data })
 			UpdateTasks()
 		end
 	end

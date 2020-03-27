@@ -4,11 +4,13 @@ ping = "Ping"	-- { position }
 
 -- Sent by computer
 emptyBatteryDetected = "Empty Battery Detected"
+batteryChargingSpaceDetected = "Battery Charging Space Detected"
 
 -- Sent by both
 register = "Register"	-- { label, type }
 
 -- Sent by server
+chargeBattery = "Charge Battery"	-- { itemsNeeded, interface, position }
 free = "Free"	-- { chargerPosition }
 getBatteryPosition = "Get Battery Position" -- { answerProtocol }
 getParkingPosition = "Get Parking Position"	-- { answerProtocol }
