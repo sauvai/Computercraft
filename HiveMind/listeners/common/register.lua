@@ -1,5 +1,6 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.config)
+os.loadAPI(files.googleMaps)
 os.loadAPI(files.protocols)
 
 function Listener() -- TODO also send position of the computer, in case it crash on startup before any ping
@@ -9,7 +10,7 @@ function Listener() -- TODO also send position of the computer, in case it crash
 	end
 
 	print("Found server, registering...")
-	local data = { label = os.computerLabel() }
+	local data = { label = os.computerLabel(), position = googleMaps.Locate() }
 	if turtle then
 		data.type = "turtle"
 	else

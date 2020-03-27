@@ -8,7 +8,7 @@ batteryChargingSpaceDetected = "Battery Charging Space Detected"
 
 -- Sent by both
 init = "Init"	-- { label, type }
-register = "Register"	-- { label, type }
+register = "Register"	-- { label, type, position }
 
 -- Sent by server
 chargeBattery = "Charge Battery"	-- { itemsNeeded, interface, position }

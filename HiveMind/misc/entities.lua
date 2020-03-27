@@ -10,8 +10,8 @@
 
 local entities = {}
 
-function Add(type, id, label)
-	table.insert(entities, { type = type, id = id, label = label, hasPinged = true })
+function Add(type, id, label, position)
+	table.insert(entities, { type = type, id = id, label = label, hasPinged = true, position = position })
 end
 
 function Remove(entityToBeRemoved)

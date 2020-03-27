@@ -5,7 +5,7 @@ os.loadAPI(files.events)
 function Listener(id, data)
 	entities.Remove(entities.Get(nil, id))
 
-	entities.Add(data.type, id, data.label)
+	entities.Add(data.type, id, data.label, data.position)
 	
 	if data.type == "computer" then
 		os.queueEvent(events.computerRegistered, id)
