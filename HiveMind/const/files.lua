@@ -17,7 +17,8 @@ multitasks =					"core/multitasks.lua"
 register = 						"listeners/common/register.lua"
 update = 						"listeners/common/update.lua"
 
-getParkingPosition = 			"listeners/computer/getParkingPosition.lua"
+getChargerPosition = 			"listeners/computer/getChargerPosition.lua"
+getInterfacePosition = 			"listeners/computer/getInterfacePosition.lua"
 getBatteryPosition = 			"listeners/computer/getBatteryPosition.lua"
 
 batteryChargingSpaceDetected =	"listeners/server/batteryChargingSpaceDetected.lua"

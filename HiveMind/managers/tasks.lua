@@ -29,7 +29,7 @@ local function WaitForComputerToConnect(label)
 	return computer
 end
 
-local function GetParkingPosition() -- TODO get all parking manager to get the closest parking
+local function GetChargerPosition() -- TODO get all parking manager to get the closest charger
 	local parkingManager = entities.Get("computer", nil, labels.parkingManager)[1]
 	local answerProtocol = tostring(os.clock())
 
@@ -37,10 +37,24 @@ local function GetParkingPosition() -- TODO get all parking manager to get the c
 		parkingManager = WaitForComputerToConnect(labels.parkingManager)
 	end
 
-	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getParkingPosition)
+	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getChargerPosition)
 	local _, data = rednet.receive(answerProtocol)
 
-	return data
+	return data.position
+end
+
+local function GetInterfacePosition() -- TODO get all parking manager to get the closest interface
+	local parkingManager = entities.Get("computer", nil, labels.parkingManager)[1]
+	local answerProtocol = tostring(os.clock())
+
+	if parkingManager == nil then
+		parkingManager = WaitForComputerToConnect(labels.parkingManager)
+	end
+
+	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getInterfacePosition)
+	local _, data = rednet.receive(answerProtocol)
+
+	return data.interface
 end
 
 local function GetChargedBatteryPosition() -- TODO get all battery farmer to get the fullest and closest battery
@@ -59,16 +73,16 @@ end
 
 local function AssignTask(turtle)
 	if turtle.task.protocol == protocols.free then
-		turtle.task.data = GetParkingPosition()
+		turtle.task.data = { chargerPosition = GetChargerPosition(), interface = GetInterfacePosition() }
 	end
 	
 	if turtle.task.protocol == protocols.replaceBattery then
 		turtle.task.data.batteryToPickup = GetChargedBatteryPosition()
-		turtle.task.data.interface = GetParkingPosition().interface
+		turtle.task.data.interface = GetInterfacePosition()
 	end
 
 	if turtle.task.protocol == protocols.chargeBattery then
-		turtle.task.data.interface = GetParkingPosition().interface
+		turtle.task.data.interface = GetInterfacePosition()
 	end
 
 	rednet.send(turtle.id, turtle.task.data, turtle.task.protocol)

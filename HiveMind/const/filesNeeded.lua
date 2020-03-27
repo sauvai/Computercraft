@@ -42,7 +42,8 @@ computersFiles = {
 		-- Computers
 		[files.parkingManager] = "",
 		-- Listeners
-		[files.getParkingPosition] = "",
+		[files.getChargerPosition] = "",
+		[files.getInterfacePosition] = "",
 	},
 	[labels.batteryMonitor] = {
 		-- Startup

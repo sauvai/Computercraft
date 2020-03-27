@@ -12,9 +12,10 @@ register = "Register"	-- { label, type }
 
 -- Sent by server
 chargeBattery = "Charge Battery"	-- { itemsNeeded, interface, position }
-free = "Free"	-- { chargerPosition }
+free = "Free"	-- { chargerPosition, interface }
 getBatteryPosition = "Get Battery Position" -- { answerProtocol }
-getParkingPosition = "Get Parking Position"	-- { answerProtocol }
+getChargerPosition = "Get Charger Position"	-- { answerProtocol }
+getInterfacePosition = "Get Interface Position"	-- { answerProtocol }
 notRegistered = "Not Registered"
 replaceBattery = "Replace Battery"	-- { interface, itemsNeeded, batteryToPickup, batteryToReplace }
 update = "Update"	-- { files = { file1 = content, file2 = content, ... } }
