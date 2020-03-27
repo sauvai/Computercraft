@@ -7,6 +7,7 @@ function Listener(id, data)
 
 	for file, content in pairs(data.files) do
 		local h = fs.open(file, "w")
+		if h == nil then error("Can't open file "..file) end
 		h.write(content)
 		h.close()
 	end
