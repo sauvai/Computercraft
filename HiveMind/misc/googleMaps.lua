@@ -174,7 +174,7 @@ function MoveTo(...)
 	local scanner = inventory.EquipScanner()
 	local map = LoadMap()
 	local moveBeforeUpdatePath = 0
-	local directions
+	local directions = {}
 	local goal = arrival
 
 	while position:tostring() ~= goal:tostring() do
@@ -182,9 +182,9 @@ function MoveTo(...)
 		SaveScanToMap(map, scanner)
 		
 		if map[GetMapKey(arrival)] then
-			local emptySpaces = utils.FindEmptySpacesArround(arrival, scanner)
+			local emptySpaces = utils.FindEmptySpacesArround(arrival - position, scanner)
 			if #emptySpaces == 0 then error("Arrival is occupied and have no empty blocks arround", 2) end
-			goal = utils.FindClosest(position, table.unpack(emptySpaces))
+			goal = utils.FindClosest(vector.new(0, 0, 0), table.unpack(emptySpaces)) + position
 		else
 			goal = arrival
 		end
