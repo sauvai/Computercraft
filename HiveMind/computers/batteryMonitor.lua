@@ -10,7 +10,7 @@ local function Main()
 	rednet.open("top")
 	register.Listener()
 
-	brain.AddListener(protocols.notRegistered, register.Listener)
+	brain.AddListener(protocols.notRegistered, os.reboot)
 	brain.AddListener(protocols.update, update.Listener)
 
 	brain.CreateManager(pingServer.Manager)

@@ -10,11 +10,12 @@ os.loadAPI(files.update)
 local function Main()
 	rednet.open("top")
 	register.Listener()
+	
+	brain.AddListener(protocols.notRegistered, os.reboot)
+	brain.AddListener(protocols.update, update.Listener)
 
 	brain.AddListener(protocols.getChargerPosition, getChargerPosition.Listener)
 	brain.AddListener(protocols.getInterfacePosition, getInterfacePosition.Listener)
-	brain.AddListener(protocols.notRegistered, register.Listener)
-	brain.AddListener(protocols.update, update.Listener)
 
 	brain.CreateManager(pingServer.Manager)
 	brain.Start()

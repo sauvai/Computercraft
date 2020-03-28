@@ -12,9 +12,10 @@ local function Main()
 	rednet.open("right")
 	register.Listener()
 
-	brain.AddListener(protocols.free, free.Listener)
-	brain.AddListener(protocols.notRegistered, register.Listener)
+	brain.AddListener(protocols.notRegistered, os.reboot)
 	brain.AddListener(protocols.update, update.Listener)
+
+	brain.AddListener(protocols.free, free.Listener)
 	brain.AddListener(protocols.replaceBattery, replaceBattery.Listener)
 	brain.AddListener(protocols.chargeBattery, chargeBattery.Listener)
 
