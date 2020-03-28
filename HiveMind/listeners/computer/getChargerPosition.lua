@@ -18,20 +18,13 @@ function Listener(id, data)
 		end
 	end
 
-	-- Find empty spaces arround chargers
 	local chargerPosition
+
 	for _, charger in pairs(chargers) do
-		chargerPosition = utils.FindEmptySpacesArround(charger, Scanner)[1]
-		if chargerPosition ~= nil then break end
-	end
-	-- Transform local position to world position
-	if chargerPosition ~= nil then
-		chargerPosition = googleMaps.Locate() + chargerPosition - computerPosition
+		if #(utils.FindEmptySpacesArround(charger, Scanner)) > 0 then
+			chargerPosition = googleMaps.Locate() + charger - computerPosition
+		end
 	end
 	
-	local messageData = {
-		position = chargerPosition
-	}
-
-	rednet.send(config.serverId, messageData, data.answerProtocol)
+	rednet.send(config.serverId, { position = chargerPosition }, data.answerProtocol)
 end
