@@ -10,7 +10,7 @@ function Listener(id, data)
 	Scanner:Scan()
 
 	local blocks = Scanner:FindBlocks(items.ae2.interface, items.computerCraft.computer)
-	local interface = blocks[items.ae2.interface][1]
+	local interfaces = blocks[items.ae2.interface]
 	local computerPosition
 	for _, computer in pairs(blocks[items.computerCraft.computer]) do
 		if Scanner:GetBlockMeta(computer).computer.id == os.computerID() then
@@ -18,20 +18,13 @@ function Listener(id, data)
 		end
 	end
 	
-	local messageData = {
-		interface = {}
-	}
+	local interfacePosition
 
-	-- Find empty spaces arround interface
-	if interface ~= nil then
-		local interfacePosition = utils.FindEmptySpacesArround(interface, Scanner)[1]
-		-- Transform local position to world position
-		if interfacePosition ~= nil then
-			messageData.interface.facing = googleMaps.VectorToDirection(interface - interfacePosition)
-			interfacePosition = googleMaps.Locate() + interfacePosition - computerPosition
+	for _, interface in pairs(interfaces) do
+		if #(utils.FindEmptySpacesArround(interface, Scanner)) > 0 then
+			interfacePosition = googleMaps.Locate() + interface - computerPosition
 		end
-		messageData.interface.position = interfacePosition
 	end
 
-	rednet.send(config.serverId, messageData, data.answerProtocol)
+	rednet.send(config.serverId, { position = interfacePosition }, data.answerProtocol)
 end

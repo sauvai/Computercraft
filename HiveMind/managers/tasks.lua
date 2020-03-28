@@ -54,7 +54,7 @@ local function GetInterfacePosition() -- TODO get all parking manager to get the
 	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getInterfacePosition)
 	local _, data = rednet.receive(answerProtocol)
 
-	return data.interface
+	return data.position
 end
 
 local function GetChargedBatteryPosition() -- TODO get all battery farmer to get the fullest and closest battery
@@ -73,16 +73,16 @@ end
 
 local function AssignTask(turtle)
 	if turtle.task.protocol == protocols.free then
-		turtle.task.data = { chargerPosition = GetChargerPosition(), interface = GetInterfacePosition() }
+		turtle.task.data = { chargerPosition = GetChargerPosition(), interfacePosition = GetInterfacePosition() }
 	end
 	
 	if turtle.task.protocol == protocols.replaceBattery then
 		turtle.task.data.batteryToPickup = GetChargedBatteryPosition()
-		turtle.task.data.interface = GetInterfacePosition()
+		turtle.task.data.interfacePosition = GetInterfacePosition()
 	end
 
 	if turtle.task.protocol == protocols.chargeBattery then
-		turtle.task.data.interface = GetInterfacePosition()
+		turtle.task.data.interfacePosition = GetInterfacePosition()
 	end
 
 	rednet.send(turtle.id, turtle.task.data, turtle.task.protocol)
@@ -142,7 +142,7 @@ function Manager()
 			UpdateTasks()
 		end
 
-		if event == events.batteryChargingSpaceDetected and not IsDuplicate(protocols.batteryChargingSpaceDetected, utils.VectorToString(param1)) then
+		if event == events.batteryChargingSpaceDetected and not IsDuplicate(protocols.chargeBattery, utils.VectorToString(param1)) then
 			local data = {
 				itemsNeeded = {
 					{ count = 1, item = items.thermalExpansion.energyCell, allowCraft = true }

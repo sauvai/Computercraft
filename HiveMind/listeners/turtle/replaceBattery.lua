@@ -6,8 +6,7 @@ os.loadAPI(files.utils)
 
 function Listener(id, data)
 	-- Go to interface
-	googleMaps.MoveTo(data.interface.position)
-	googleMaps.FaceDirection(data.interface.facing)
+	googleMaps.MoveTo(data.interfacePosition)
 	-- Get items needed
 	local p, side = utils.FindPeripheral(items.ae2.interface)
 	side = googleMaps.SideToDirection(side)
