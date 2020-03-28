@@ -226,7 +226,7 @@ function MoveTo(...)
 end
 
 function FaceDirection(direction)
-	if direction == "up" or direction == "down" then return end
+	if direction == up or direction == down then return end
 	while direction ~= GetOwnDirection() do
 		turtle.turnRight()
 	end
@@ -242,14 +242,15 @@ end
 function SideToDirection(side)
 	local scanner = inventory.EquipScanner()
 	local ownDirection = GetOwnDirection()
-	if side == "front" or side == "up" or side == "down" then return ownDirection end
+	if side == "top" then return up end
+	if side == "bottom" then return down end
 
 	local wheelId
 	for i = 1, #directionWheel do
 		if ownDirection == directionWheel[i] then wheelId = i - 1 end
 	end
 
-	local wheelTurn
+	local wheelTurn = 0
 	if side == "right" then wheelTurn = 1 end
 	if side == "left" then wheelTurn = -1 end
 	if side == "back" then wheelTurn = 2 end

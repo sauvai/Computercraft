@@ -3,8 +3,8 @@ os.loadAPI(files.inventory)
 os.loadAPI(files.items)
 
 local interfaceSide = {
-    ["top"] = "down",
-	["bottom"] = "up",
+    ["up"] = "down",
+	["down"] = "up",
 	["north"] = "south",
 	["south"] = "north",
 	["east"] = "west",
@@ -14,19 +14,19 @@ local interfaceSide = {
 local Interface = {}
 
 -- Constructeur
-function Interface.__init__(baseClass, peripheral, side)
+function Interface.__init__(baseClass, peripheral, direction)
     if not peripheral then
         error("Provided peripheral is nil", 2)
     end
-    if not interfaceSide[side] then
-        error("Invalid side provided (side:"..tostring(side)..")", 2)
+    if not interfaceSide[direction] then
+        error("Invalid direction provided (direction:"..tostring(direction)..")", 2)
     end
 
     self = {}
     setmetatable(self, { __index = Interface })
 
     self.peripheral = peripheral
-    self.side = interfaceSide[side]
+    self.side = interfaceSide[direction]
     return self
 end
 
@@ -34,8 +34,8 @@ end
 setmetatable(Interface, { __call = Interface.__init__ })
 
 -- PUBLIC
-function New(peripheral, side)
-    return Interface(peripheral, side)
+function New(peripheral, direction)
+    return Interface(peripheral, direction)
 end
 
 function Interface:DumpInventory()
