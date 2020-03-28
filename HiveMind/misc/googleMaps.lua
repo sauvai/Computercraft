@@ -199,23 +199,38 @@ function MoveTo(...)
 		end
 		
 		local direction = table.remove(directions, 1)
+		local ownDirection = GetOwnDirection()
+
 		if direction == up then
 			turtle.up();
 		elseif direction == down then
 			turtle.down()
-		else
-			while direction ~= GetOwnDirection() do
-				turtle.turnRight()
-			end
+		elseif direction == ownDirection then
 			turtle.forward()
+		else
+			local owDirectionId
+			local directionId
+			for i = 1, #directionWheel do
+				if ownDirection == directionWheel[i] then owDirectionId = i - 1 end
+				if direction == directionWheel[i] then directionId = i - 1 end
+			end
+		
+			local wheelTurn = directionId - owDirectionId
+			if wheelTurn == 1 or wheelTurn == -3 then
+				turtle.turnRight()
+				turtle.forward()
+			end
+			if wheelTurn == 3 or wheelTurn == -1 then
+				turtle.turnLeft()
+				turtle.forward()
+			end
+			if wheelTurn == 2 or wheelTurn == -2 then
+				turtle.back()
+			end
 		end
 		
 		position = Locate()
 		moveBeforeUpdatePath = moveBeforeUpdatePath - 1
-
-		while #map > 900000 do ---- TODO test if #map work (should not actually)
-			table.remove(map, 1)
-		end
 	end
 	
 	SaveMap(map)
@@ -227,8 +242,23 @@ end
 
 function FaceDirection(direction)
 	if direction == up or direction == down then return end
-	while direction ~= GetOwnDirection() do
-		turtle.turnRight()
+
+	local ownDirection = GetOwnDirection()
+	if direction == ownDirection then return end
+
+	local owDirectionId
+	local directionId
+	for i = 1, #directionWheel do
+		if ownDirection == directionWheel[i] then owDirectionId = i - 1 end
+		if direction == directionWheel[i] then directionId = i - 1 end
+	end
+
+	local wheelTurn = directionId - owDirectionId
+	if wheelTurn == 1 or wheelTurn == -3 then turtle.turnRight() end
+	if wheelTurn == 3 or wheelTurn == -1 then turtle.turnLeft() end
+	if wheelTurn == 2 or wheelTurn == -2 then
+		turtle.turnLeft()
+		turtle.turnLeft()
 	end
 end
 
