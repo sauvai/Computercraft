@@ -22,6 +22,7 @@ function Listener(id, data)
 			else
 				if attempt == 0 then
 					if not MeBridge:CraftItem(item.name, item.count - total) then
+						os.reboot()
 						error("Can't craft "..tostring(item.count).." "..item.name)
 					end
 					attempt = 60

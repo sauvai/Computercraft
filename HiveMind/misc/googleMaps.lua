@@ -196,6 +196,7 @@ function MoveTo(...)
 		end
 		
 		if directions == nil then
+			os.reboot()
 			error("No path found, position = "..position..", goal : "..goal, 2)
 			return
 		end
