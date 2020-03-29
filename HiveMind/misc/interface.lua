@@ -1,6 +1,5 @@
 os.loadAPI("const/files.lua")
 os.loadAPI(files.inventory)
-os.loadAPI(files.items)
 
 local interfaceSide = {
     ["up"] = "down",
@@ -39,40 +38,8 @@ function New(peripheral, direction)
 end
 
 function Interface:DumpInventory()
-	for i = 1, 16 do
-		self.peripheral.pullItems(self.side, i)
-	end
-	self.peripheral.pullItems(self.side, inventory.Unequip())
-	-- Get back scanner
-	self:GetItem({ name = "plethora:module", damage = 2 }, 1, true)
-end
-
-function Interface:GetItem(itemName, count, allowCraft) -- TODO separate in multiple simpler "do-task" function and move checks out of this class (so the turtle might change its behavior depending on the error)
-    local item = self.peripheral.findItem(itemName)
-    if not item then
-        print("No items stored nor recipe to craft for", itemName)
-        return nil
-    end
-
-    if count > item.getMetadata().count then
-        if allowCraft then
-            local craft = item.craft(count - item.getMetadata().count)
-            if craft.status() == "missing" then
-                print("Not enought", itemName, "available (needed amount:", count, ") and can't craft enought")
-                return nil
-            end
-            while not craft.isFinished() or craft.isCanceled() do
-                sleep(1)
-            end
-        else
-            print("Not enought", itemName, "available (needed amount:", count, ") and crafting is not enabled for this item")
-            return nil
-        end
-    end
-
-    item = self.peripheral.findItem(itemName)
-    local exportCount = math.min(item.getMetadata().count, count)
-    if exportCount > 0 then
-        return item.export(self.side, exportCount)
+    inventory.EquipScanner()
+    for i = 1, 16 do
+        self.peripheral.pullItems(self.side, i)
     end
 end

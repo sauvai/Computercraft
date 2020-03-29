@@ -31,7 +31,7 @@ end
 
 local function GetChargerPosition() -- TODO get all parking manager to get the closest charger
 	local parkingManager = entities.Get("computer", nil, labels.parkingManager)[1]
-	local answerProtocol = tostring(os.clock())
+	local answerProtocol = tostring(math.random())
 
 	if parkingManager == nil then
 		parkingManager = WaitForComputerToConnect(labels.parkingManager)
@@ -45,7 +45,7 @@ end
 
 local function GetInterfacePosition() -- TODO get all parking manager to get the closest interface
 	local parkingManager = entities.Get("computer", nil, labels.parkingManager)[1]
-	local answerProtocol = tostring(os.clock())
+	local answerProtocol = tostring(math.random())
 
 	if parkingManager == nil then
 		parkingManager = WaitForComputerToConnect(labels.parkingManager)
@@ -57,9 +57,24 @@ local function GetInterfacePosition() -- TODO get all parking manager to get the
 	return data.position
 end
 
+local function GetMeBridgePosition() -- TODO get all parking manager to get the closest ME Bridge
+	local parkingManager = entities.Get("computer", nil, labels.parkingManager)[1]
+	local answerProtocol = tostring(math.random())
+
+	if parkingManager == nil then
+		parkingManager = WaitForComputerToConnect(labels.parkingManager)
+	end
+
+	rednet.send(parkingManager.id, { answerProtocol = answerProtocol }, protocols.getMeBridgePosition)
+	local _, data = rednet.receive(answerProtocol)
+
+	print(textutils.serialize(data))
+	return data.position
+end
+
 local function GetChargedBatteryPosition() -- TODO get all battery farmer to get the fullest and closest battery
 	local batteryFarmer = entities.Get("computer", nil, labels.batteryFarmer)[1]
-	local answerProtocol = tostring(os.clock())
+	local answerProtocol = tostring(math.random())
 
 	if batteryFarmer == nil then
 		batteryFarmer = WaitForComputerToConnect(labels.batteryFarmer)
@@ -78,11 +93,11 @@ local function AssignTask(turtle)
 	
 	if turtle.task.protocol == protocols.replaceBattery then
 		turtle.task.data.batteryToPickup = GetChargedBatteryPosition()
-		turtle.task.data.interfacePosition = GetInterfacePosition()
+		turtle.task.data.meBridgePosition = GetMeBridgePosition()
 	end
 
 	if turtle.task.protocol == protocols.chargeBattery then
-		turtle.task.data.interfacePosition = GetInterfacePosition()
+		turtle.task.data.meBridgePosition = GetMeBridgePosition()
 	end
 
 	rednet.send(turtle.id, turtle.task.data, turtle.task.protocol)
@@ -134,7 +149,7 @@ function Manager()
 		if event == events.emptyBatteryDetected and not IsDuplicate(protocols.replaceBattery, utils.VectorToString(param1)) then
 			local data = {
 				itemsNeeded = {
-					{ count = 1, item = { name = items.tools.pickaxe, damage = 0 }, allowCraft = true }
+					{ count = 1, name = items.tools.pickaxe }
 				},
 				batteryToReplace = param1
 			}
@@ -145,7 +160,7 @@ function Manager()
 		if event == events.batteryChargingSpaceDetected and not IsDuplicate(protocols.chargeBattery, utils.VectorToString(param1)) then
 			local data = {
 				itemsNeeded = {
-					{ count = 1, item = items.thermalExpansion.energyCell, allowCraft = true }
+					{ count = 1, name = items.thermalExpansion.energyCell }
 				},
 				position = param1
 			}

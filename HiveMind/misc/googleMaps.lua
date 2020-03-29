@@ -51,6 +51,9 @@ local function ShortestPath(goal, map)
 	local currentPosition = Locate()
 	local closedList = {}
 	local openedList = { Node(currentPosition, 0, 0, 0) }
+	if goal:tostring() == currentPosition:tostring() then
+		return { "up" } -- return a random direction to prevent A* to search indefinitly for nothing
+	end
 	
 	while #openedList > 0 do
 		os.queueEvent("fakeEvent");
@@ -189,12 +192,12 @@ function MoveTo(...)
 			goal = arrival
 		end
 		if moveBeforeUpdatePath == 0 or #directions == 0 then
-			directions = ShortestPath(goal, map)
+			directions = ShortestPath(goal, position, map)
 			moveBeforeUpdatePath = pathUpdateFrequency
 		end
 		
 		if directions == nil then
-			error("No path found", 2)
+			error("No path found, position = "..position..", goal : "..goal.., 2)
 			return
 		end
 		

@@ -33,6 +33,7 @@ turtlesFiles = {
 	[files.replaceBattery] = "",
 	-- Misc
 	[files.interface] = "",
+	[files.meBridge] = "",
 }
 
 computersFiles = {
@@ -44,6 +45,7 @@ computersFiles = {
 		-- Listeners
 		[files.getChargerPosition] = "",
 		[files.getInterfacePosition] = "",
+		[files.getMeBridgePosition] = "",
 	},
 	[labels.batteryMonitor] = {
 		-- Startup

@@ -13,6 +13,8 @@ os.loadAPI(files.taskFinished)
 os.loadAPI(files.tasks)
 
 local function Main()
+	math.randomseed(os.time())
+	
 	local h = fs.open("startup", "w")
 	h.write("shell.run(\"computers/server.lua\")")
 	h.close()

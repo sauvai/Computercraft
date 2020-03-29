@@ -32,7 +32,8 @@ minecraft = {
 }	
 
 peripheralsPlusOne = {
-	rfCharger = "peripheralsplusone:rf_charger"
+	rfCharger = "peripheralsplusone:rf_charger",
+	meBridge = "peripheralsplusone:me_bridge",
 }	
 
 thermalDynamics = {

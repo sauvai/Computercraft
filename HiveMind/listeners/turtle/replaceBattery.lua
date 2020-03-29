@@ -5,19 +5,32 @@ os.loadAPI(files.googleMaps)
 os.loadAPI(files.utils)
 
 function Listener(id, data)
-	-- Go to interface
-	googleMaps.MoveTo(data.interfacePosition)
+	-- Go to ME Bridge position
+	googleMaps.MoveTo(data.meBridgePosition)
 	-- Get items needed
-	local p, side = utils.FindPeripheral(items.ae2.interface)
+	local p, side = utils.FindPeripheral("meBridge")
 	side = googleMaps.SideToDirection(side)
-	local Interface = interface.New(p, side)
+	local MeBridge = meBridge.New(p, side)
 	for _, item in pairs(data.itemsNeeded) do
 		local total = 0
-		local count = 1
-		while  count > 0 and total < item.count do
-			count = Interface:GetItem(item.item, count, item.allowCraft)
-			if not count then error("Can't get item "..textutils.serialize(item.item)) end
-			total = total + count
+		local attempt = 0
+		while total < item.count do
+			if MeBridge:ItemCount(item.name) > 0 then
+				total = total + MeBridge:GetItem(item.name, item.count - total)
+			else
+				if attempt == 0 then
+					if not MeBridge:CraftItem(item.name, item.count - total) then
+						error("Can't craft "..tostring(item.count).." "..item.name)
+					end
+					attempt = 60
+				else
+					attempt = attempt - 1
+				end
+			end
+
+			if total < item.count then
+				sleep(1)
+			end
 		end
 	end
 	-- Go to battery to pickup
