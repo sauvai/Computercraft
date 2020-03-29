@@ -9,6 +9,20 @@ os.loadAPI(files.utils)
 local chat
 local listeners = {}
 
+-------------- PRIVATE -------------
+
+local function Say(message)
+	chat.say(message, -1, true, os.computerLabel())
+end
+
+local function Tell(message, player)
+	chat.tell(player, message, -1, true, os.computerLabel())
+end
+
+local function AddListener(command, callback)
+	listeners[command] = callback
+end
+
 -------------- UPDATE --------------
 
 local function DownloadRepository()
@@ -55,9 +69,11 @@ function SendUpdateMessage(entity, filesList)
 end
 
 local function Update()
+	Say("Downloading repository")
 	DownloadRepository()
 
 	for _, entity in pairs(entities.Get()) do
+		Say("Updating "..entity.label)
 		if entity.type == "turtle" then
 			SendUpdateMessage(entity, filesNeeded.turtlesFiles)
 		else
@@ -66,20 +82,6 @@ local function Update()
 	end
 
 	os.reboot()
-end
-
--------------- PRIVATE -------------
-
-local function Say(message)
-	chat.say(message, -1, true, os.computerLabel())
-end
-
-local function Tell(message, player)
-	chat.tell(player, message, -1, true, os.computerLabel())
-end
-
-local function AddListener(command, callback)
-	listeners[command] = callback
 end
 
 -------------- PUBLIC --------------
