@@ -47,8 +47,7 @@ local function GetDirection(displacement)
 	return nil
 end
 
-local function ShortestPath(goal, map)
-	local currentPosition = Locate()
+local function ShortestPath(goal, currentPosition, map)
 	local closedList = {}
 	local openedList = { Node(currentPosition, 0, 0, 0) }
 	if goal:tostring() == currentPosition:tostring() then
