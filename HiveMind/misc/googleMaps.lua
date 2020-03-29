@@ -197,7 +197,7 @@ function MoveTo(...)
 		end
 		
 		if directions == nil then
-			error("No path found, position = "..position..", goal : "..goal.., 2)
+			error("No path found, position = "..position..", goal : "..goal, 2)
 			return
 		end
 		
