@@ -1,8 +1,9 @@
 os.loadAPI("const/files.lua")
-os.loadAPI(files.meBridge)
+os.loadAPI(files.discord)
 os.loadAPI(files.inventory)
 os.loadAPI(files.items)
 os.loadAPI(files.googleMaps)
+os.loadAPI(files.meBridge)
 os.loadAPI(files.utils)
 
 function Listener(id, data)
@@ -16,14 +17,21 @@ function Listener(id, data)
 	for _, item in pairs(data.itemsNeeded) do
 		local total = 0
 		local attempt = 0
+		local hasWarned = false
+
 		while total < item.count do
 			if MeBridge:ItemCount(item.name) > 0 then
 				total = total + MeBridge:GetItem(item.name, item.count - total)
 			else
 				if attempt == 0 then
 					if not MeBridge:CraftItem(item.name, item.count - total) then
-						os.reboot()
-						error("Can't craft "..tostring(item.count).." "..item.name)
+						if not hasWarned then
+							discord.Send("Can't craft", item.count, item.name)
+							hasWarned = true
+						end
+						sleep(60)
+						-- os.reboot()
+						-- error()
 					end
 					attempt = 60
 				else

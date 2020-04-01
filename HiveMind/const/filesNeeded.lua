@@ -32,6 +32,7 @@ turtlesFiles = {
 	[files.chargeBattery] = "",
 	[files.replaceBattery] = "",
 	-- Misc
+	[files.discord] = "",
 	[files.interface] = "",
 	[files.meBridge] = "",
 }

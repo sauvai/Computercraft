@@ -81,6 +81,7 @@ local function Update()
 		end
 	end
 
+	Say("Update done! Rebooting")
 	os.reboot()
 end
 
