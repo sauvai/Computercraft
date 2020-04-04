@@ -1,4 +1,5 @@
 os.loadAPI("const/files.lua")
+os.loadAPI(files.config)
 os.loadAPI(files.inventory)
 os.loadAPI(files.utils)
 
@@ -129,9 +130,7 @@ local function ShortestPath(goal, currentPosition, map)
 	end
 end
 
-local function SaveScanToMap(map, scanner)
-	local worldPosition = Locate()
-
+local function SaveScanToMap(worldPosition, map, scanner)
 	local minDistance = scanner:GetRadius() * -1
 	local maxDistance = scanner:GetRadius()
 
@@ -187,7 +186,7 @@ function MoveTo(...)
 
 	while position:tostring() ~= goal:tostring() do
 		scanner:Scan()
-		SaveScanToMap(map, scanner)
+		SaveScanToMap(position, map, scanner)
 		
 		if map[GetMapKey(arrival)] then
 			local emptySpaces = utils.FindEmptySpacesArround(arrival - position, scanner)
@@ -311,5 +310,10 @@ function VectorToDirection(...)
 end
 
 function Locate()
-	return vector.new(gps.locate())
+	local v
+	while not v or v.x ~= v.x or v.y ~= v.y or v.z ~= v.z or (v.x == 0 and v.y == 0 and v.z == 0) do
+		v = vector.new(gps.locate())
+	end
+	config.ownPosition = v
+	return v
 end

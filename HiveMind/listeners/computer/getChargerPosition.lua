@@ -22,7 +22,7 @@ function Listener(id, data)
 
 	for _, charger in pairs(chargers) do
 		if #(utils.FindEmptySpacesArround(charger, Scanner)) > 0 then
-			chargerPosition = googleMaps.Locate() + charger - computerPosition
+			chargerPosition = config.ownPosition + charger - computerPosition
 		end
 	end
 	

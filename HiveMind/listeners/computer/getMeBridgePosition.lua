@@ -22,7 +22,7 @@ function Listener(id, data)
 
 	for _, meBridge in pairs(meBridges) do
 		if #(utils.FindEmptySpacesArround(meBridge, Scanner)) > 0 then
-			meBridgePosition = googleMaps.Locate() + meBridge - computerPosition
+			meBridgePosition = config.ownPosition + meBridge - computerPosition
 		end
 	end
 

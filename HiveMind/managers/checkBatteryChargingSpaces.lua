@@ -21,7 +21,7 @@ local function FindBatteryChargingSpacesAvailable()
 	local batteriesToPlace = {}
 	for _, fluxDuct in pairs(fluxDucts) do
 		if Scanner:IsEmptyBlock(fluxDuct - vector.new(0, 1, 0)) then
-			table.insert(batteriesToPlace, googleMaps.Locate() + fluxDuct - vector.new(0, 1, 0) - computerPosition)
+			table.insert(batteriesToPlace, config.ownPosition + fluxDuct - vector.new(0, 1, 0) - computerPosition)
 		end
 	end
 	

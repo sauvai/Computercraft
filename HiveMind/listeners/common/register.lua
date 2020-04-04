@@ -10,7 +10,8 @@ function Listener() -- TODO also send position of the computer, in case it crash
 	end
 
 	print("Found server, registering...")
-	local data = { label = os.computerLabel(), position = googleMaps.Locate() }
+	googleMaps.Locate()
+	local data = { label = os.computerLabel(), position = ownPosition }
 	if turtle then
 		data.type = "turtle"
 	else

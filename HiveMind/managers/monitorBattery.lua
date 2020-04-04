@@ -22,7 +22,7 @@ local function FindBatteriesToReplace()
 	for _, battery in pairs(batteries) do
 		local rfData = Scanner:GetBlockMeta(battery).rf
 		if (rfData.stored / rfData.capacity * 100 < config.batteryReplaceThreshold) then
-			table.insert(batteriesToReplace, googleMaps.Locate() + battery - computerPosition)
+			table.insert(batteriesToReplace, config.ownPosition + battery - computerPosition)
 		end
 	end
 

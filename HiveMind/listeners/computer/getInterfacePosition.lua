@@ -22,7 +22,7 @@ function Listener(id, data)
 
 	for _, interface in pairs(interfaces) do
 		if #(utils.FindEmptySpacesArround(interface, Scanner)) > 0 then
-			interfacePosition = googleMaps.Locate() + interface - computerPosition
+			interfacePosition = config.ownPosition + interface - computerPosition
 		end
 	end
 

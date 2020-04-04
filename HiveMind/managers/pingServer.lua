@@ -6,6 +6,6 @@ os.loadAPI(files.protocols)
 function Manager()
 	while true do
 		sleep(config.pingIntervalS)
-		rednet.send(config.serverId, { position = googleMaps.Locate() }, protocols.ping)
+		rednet.send(config.serverId, { position = config.ownPosition or googleMaps.Locate() }, protocols.ping)
 	end
 end

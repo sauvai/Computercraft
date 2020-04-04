@@ -30,7 +30,7 @@ function Listener(id, data)
 
 	-- Transform local position to world position
 	if maxFilledBattery ~= nil then
-		maxFilledBattery = googleMaps.Locate() + maxFilledBattery - computerPosition
+		maxFilledBattery = config.ownPosition + maxFilledBattery - computerPosition
 	end
 	
 	rednet.send(config.serverId, { position = maxFilledBattery }, data.answerProtocol)
