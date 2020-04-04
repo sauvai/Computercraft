@@ -3,21 +3,21 @@ os.loadAPI(files.inventory)
 os.loadAPI(files.utils)
 
 local w1 = 1
-local w2 = 10
+local w2 = 1
 local pathUpdateFrequency = 8
 local mapPath = "data/map"
 
 -- Node struct
 local Node = {}
 
-function Node.__init__(baseClass, position, cost, distance, heuristic)
+function Node.__init__(baseClass, position)
 	self = {}
 	setmetatable(self, { __index = Node })
 	
 	self.position = position
-	self.cost = cost			-- f
-	self.distance = distance	-- g
-	self.heuristic = heuristic  -- h
+	self.cost = 0		-- f
+	self.distance = 0	-- g
+	self.heuristic = 0  -- h
 	return self
 end
 
@@ -49,26 +49,42 @@ end
 
 local function ShortestPath(goal, currentPosition, map)
 	local closedList = {}
-	local openedList = { Node(currentPosition, 0, 0, 0) }
+	local openedList = { Node(currentPosition) }
 	if goal:tostring() == currentPosition:tostring() then
 		return { "up" } -- return a random direction to prevent A* to search indefinitly for nothing
 	end
 	
+	-- Creating variable here instead of inside the loop for optimization purpose
+	local currentNode
+	local successors
+	local currentSuccessor
+
 	while #openedList > 0 do
 		os.queueEvent("fakeEvent");
 		os.pullEvent();
-		local currentNode = table.remove(openedList, 1)
-		local successors = {
-			Node(vector.new(currentNode.position.x, currentNode.position.y - 1, currentNode.position.z), 0, 0, 0),
-			Node(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z + 1), 0, 0, 0),
-			Node(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z - 1), 0, 0, 0),
-			Node(vector.new(currentNode.position.x + 1, currentNode.position.y, currentNode.position.z), 0, 0, 0),
-			Node(vector.new(currentNode.position.x - 1, currentNode.position.y, currentNode.position.z), 0, 0, 0),
-			Node(vector.new(currentNode.position.x, currentNode.position.y + 1, currentNode.position.z), 0, 0, 0),
-		}
+		currentNode = table.remove(openedList, 1)
+		successors = {}
+		if not (map[GetMapKey(vector.new(currentNode.position.x, currentNode.position.y - 1, currentNode.position.z))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x, currentNode.position.y - 1, currentNode.position.z)))
+		end
+		if not (map[GetMapKey(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z + 1))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z + 1)))
+		end
+		if not (map[GetMapKey(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z - 1))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x, currentNode.position.y, currentNode.position.z - 1)))
+		end
+		if not (map[GetMapKey(vector.new(currentNode.position.x + 1, currentNode.position.y, currentNode.position.z))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x + 1, currentNode.position.y, currentNode.position.z)))
+		end
+		if not (map[GetMapKey(vector.new(currentNode.position.x - 1, currentNode.position.y, currentNode.position.z))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x - 1, currentNode.position.y, currentNode.position.z)))
+		end
+		if not (map[GetMapKey(vector.new(currentNode.position.x, currentNode.position.y + 1, currentNode.position.z))] == true) then
+			table.insert(successors, Node(vector.new(currentNode.position.x, currentNode.position.y + 1, currentNode.position.z)))
+		end
 		
 		for i = 1, #successors do
-			local currentSuccessor = successors[i]
+			currentSuccessor = successors[i]
 			currentSuccessor.parent = currentNode
 			
 			if currentSuccessor.position:tostring() == goal:tostring() then
@@ -85,19 +101,11 @@ local function ShortestPath(goal, currentPosition, map)
 			currentSuccessor.heuristic = utils.ManhattanDistance(currentSuccessor.position, goal)
 			currentSuccessor.cost = w1 * currentSuccessor.distance + w2 * currentSuccessor.heuristic
 			
-			local block = map[GetMapKey(currentSuccessor.position)]
-			if block == nil then
-				currentSuccessor.distance = currentSuccessor.distance + 1
-				block = false
-			end
-	
-			local shouldSkip = block
-			if not shouldSkip then
-				for j = 1, #openedList do
-					if openedList[j].position:tostring() == currentSuccessor.position:tostring() and openedList[j].cost <= currentSuccessor.cost then
-						shouldSkip = true
-						break
-					end
+			local shouldSkip = false
+			for j = 1, #openedList do
+				if openedList[j].position:tostring() == currentSuccessor.position:tostring() and openedList[j].cost <= currentSuccessor.cost then
+					shouldSkip = true
+					break
 				end
 			end
 			if not shouldSkip then
@@ -109,11 +117,11 @@ local function ShortestPath(goal, currentPosition, map)
 				end
 			end
 			if not shouldSkip then
-				local k = 1
-				while k <= #openedList and openedList[k].cost < currentSuccessor.cost do
-					k = k + 1
+				local j = 1
+				while j <= #openedList and openedList[j].cost < currentSuccessor.cost do
+					j = j + 1
 				end
-				table.insert(openedList, k, currentSuccessor)
+				table.insert(openedList, j, currentSuccessor)
 			end
 		end
 
@@ -136,8 +144,6 @@ local function SaveScanToMap(map, scanner)
 			end
 		end
 	end
-
-	return closestPosition
 end
 
 local function LoadMap()
