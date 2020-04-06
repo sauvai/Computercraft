@@ -5,6 +5,7 @@ os.loadAPI(files.utils)
 
 local w1 = 1
 local w2 = 1
+local pathMaxLength = 20
 local pathUpdateFrequency = 8
 local mapPath = "data/map"
 
@@ -88,7 +89,7 @@ local function ShortestPath(goal, currentPosition, map)
 			currentSuccessor = successors[i]
 			currentSuccessor.parent = currentNode
 			
-			if currentSuccessor.position:tostring() == goal:tostring() then
+			if currentSuccessor.position:tostring() == goal:tostring() or utils.ManhattanDistance(currentSuccessor.position, currentPosition) >= pathMaxLength then
 				local movements = {}
 				while currentSuccessor.parent do
 					local displacement = currentSuccessor.position - currentSuccessor.parent.position
@@ -173,6 +174,28 @@ local function SaveMap(map)
 end
 
 -- PUBLIC
+function FindPath(...)
+	local arrival = utils.VariadicToVector(arg)
+	local position = Locate()
+	if position:tostring() == arrival:tostring() then return end
+	local scanner = inventory.EquipScanner()
+	local map = LoadMap()
+	local goal = arrival
+
+	scanner:Scan()
+	SaveScanToMap(position, map, scanner)
+	
+	if map[GetMapKey(arrival)] then
+		local emptySpaces = utils.FindEmptySpacesArround(arrival - position, scanner)
+		if #emptySpaces == 0 then error("Arrival is occupied and have no empty blocks arround", 2) end
+		goal = utils.FindClosest(vector.new(0, 0, 0), table.unpack(emptySpaces)) + position
+	else
+		goal = arrival
+	end
+
+	return ShortestPath(goal, position, map)
+end
+
 function MoveTo(...)
 	local arrival = utils.VariadicToVector(arg)
 	print("Moving to", arrival)
