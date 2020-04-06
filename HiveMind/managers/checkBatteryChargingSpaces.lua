@@ -32,9 +32,9 @@ function Manager()
 	Scanner = scanner.New(utils.FindManipulator("plethora:scanner"))
 
 	while true do
-		sleep(5)
 		for _, position in pairs(FindBatteryChargingSpacesAvailable()) do
 			rednet.send(config.serverId, { position = position }, protocols.batteryChargingSpaceDetected)
 		end
+		sleep(config.checkBatteryChargingSpacesIntervalS)
 	end
 end

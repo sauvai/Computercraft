@@ -3,10 +3,11 @@ os.loadAPI(files.config)
 os.loadAPI(files.googleMaps)
 os.loadAPI(files.protocols)
 
-function Listener() -- TODO also send position of the computer, in case it crash on startup before any ping
+function Listener()
+	config.serverId = rednet.lookup("Hive Mind", "server")
 	while not config.serverId do
 		config.serverId = rednet.lookup("Hive Mind", "server")
-		sleep(1)
+		sleep(config.serverLookupIntervalS)
 	end
 
 	print("Found server, registering...")

@@ -1,4 +1,6 @@
 os.loadAPI("const/files.lua")
+os.loadAPI(files.config)
+os.loadAPI(files.discord)
 os.loadAPI(files.interface)
 os.loadAPI(files.inventory)
 os.loadAPI(files.googleMaps)
@@ -25,11 +27,9 @@ function Listener(id, data)
 							discord.Send("Can't craft", item.count, item.name)
 							hasWarned = true
 						end
-						sleep(60)
-						-- os.reboot()
-						-- error("Can't craft "..tostring(item.count).." "..item.name)
+						sleep(config.itemsCraftWaitTimeS)
 					end
-					attempt = 60
+					attempt = config.itemsCraftWaitTimeS
 				else
 					attempt = attempt - 1
 				end

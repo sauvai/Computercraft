@@ -33,9 +33,9 @@ function Manager()
 	Scanner = scanner.New(utils.FindManipulator("plethora:scanner"))
 
 	while true do
-		sleep(5)
 		for _, position in pairs(FindBatteriesToReplace()) do
 			rednet.send(config.serverId, { position = position }, protocols.emptyBatteryDetected)
 		end
+		sleep(config.checkBatteriesToReplaceIntervalS)
 	end
 end

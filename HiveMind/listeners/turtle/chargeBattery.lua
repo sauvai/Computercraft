@@ -1,4 +1,5 @@
 os.loadAPI("const/files.lua")
+os.loadAPI(files.config)
 os.loadAPI(files.discord)
 os.loadAPI(files.inventory)
 os.loadAPI(files.items)
@@ -29,11 +30,9 @@ function Listener(id, data)
 							discord.Send("Can't craft", item.count, item.name)
 							hasWarned = true
 						end
-						sleep(60)
-						-- os.reboot()
-						-- error()
+						sleep(config.itemCraftWaitTimeS)
 					end
-					attempt = 60
+					attempt = config.itemCraftWaitTimeS
 				else
 					attempt = attempt - 1
 				end
@@ -44,11 +43,11 @@ function Listener(id, data)
 			end
 		end
 	end
-	-- Go to battery to position
+	-- Go to battery position
 	local arrival = data.position - vector.new(0, 1, 0)
-	while googleMaps.Locate():tostring() ~= arrival:tostring() do
+	while config.ownPosition:tostring() ~= arrival:tostring() do
 		googleMaps.MoveTo(arrival)
-		sleep(5)
+		sleep(20)
 	end
 	-- Place new battery
 	turtle.select(inventory.Find(items.thermalExpansion.energyCell))

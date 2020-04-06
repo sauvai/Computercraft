@@ -11,7 +11,7 @@ end
 local serverId
 while not serverId do
 	serverId = rednet.lookup("Hive Mind", "server")
-	sleep(1)
+	sleep(5)
 end
 
 local data = { label = os.computerLabel() }
